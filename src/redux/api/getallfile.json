@@ -1,0 +1,228 @@
+{
+  "message": "Data found successfully",
+  "total_documents": 96,
+  "total_pages": 10,
+  "data": [
+    {
+      "_id": {
+        "$oid": "677cfcd8e4db560498219428"
+      },
+      "file_name": "Subro  Assignment (Cohen's).docx",
+      "file_type": "docx",
+      "file_path": "/llm development/library/!auto -- motions briefs and issues/covenant/subro  assignment (cohen's).docx",
+      "created_at": {
+        "$date": "2025-01-07T15:37:20.758Z"
+      },
+      "is_synced": true,
+      "synced_on": {
+        "$date": "2025-01-07T15:38:58.876Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "677cfcd8e4db560498219426"
+      },
+      "file_name": "Covenant Rulings by Judge.docx",
+      "file_type": "docx",
+      "file_path": "/llm development/library/!auto -- motions briefs and issues/covenant/covenant rulings by judge.docx",
+      "created_at": {
+        "$date": "2025-01-07T15:37:20.757Z"
+      },
+      "is_synced": true,
+      "synced_on": {
+        "$date": "2025-01-07T15:38:58.876Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "677cfcd8e4db560498219427"
+      },
+      "file_name": "Response in Opposition to Emergency MSD (Covenant).docx",
+      "file_type": "docx",
+      "file_path": "/llm development/library/!auto -- motions briefs and issues/covenant/response in opposition to emergency msd (covenant).docx",
+      "created_at": {
+        "$date": "2025-01-07T15:37:20.757Z"
+      },
+      "is_synced": true,
+      "synced_on": {
+        "$date": "2025-01-07T15:38:58.876Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "677cfcd8e4db560498219424"
+      },
+      "file_name": "Motion Amend the Complaint or Motion to Intervene (from Jamie Low) .docx",
+      "file_type": "docx",
+      "file_path": "/llm development/library/!auto -- motions briefs and issues/covenant/motion amend the complaint or motion to intervene (from jamie low) .docx",
+      "created_at": {
+        "$date": "2025-01-07T15:37:20.756Z"
+      },
+      "is_synced": true,
+      "synced_on": {
+        "$date": "2025-01-07T15:38:58.876Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "677cfcd8e4db560498219425"
+      },
+      "file_name": "Response to Emergency SD (General Covenant).docx",
+      "file_type": "docx",
+      "file_path": "/llm development/library/!auto -- motions briefs and issues/covenant/response to emergency sd (general covenant).docx",
+      "created_at": {
+        "$date": "2025-01-07T15:37:20.756Z"
+      },
+      "is_synced": true,
+      "synced_on": {
+        "$date": "2025-01-07T15:38:58.876Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "677cfcd8e4db560498219423"
+      },
+      "file_name": "ASSIGNMENT SENT TO GRAY MEDICAL.docx",
+      "file_type": "docx",
+      "file_path": "/llm development/library/!auto -- motions briefs and issues/covenant/assignments/assignment sent to gray medical.docx",
+      "created_at": {
+        "$date": "2025-01-07T15:37:20.755Z"
+      },
+      "is_synced": true,
+      "synced_on": {
+        "$date": "2025-01-07T15:38:58.876Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "677cfcd8e4db560498219421"
+      },
+      "file_name": "Provider PIP Assignment SRS 2020-09-04.docx",
+      "file_type": "docx",
+      "file_path": "/llm development/library/!auto -- motions briefs and issues/covenant/assignments/provider pip assignment srs 2020-09-04.docx",
+      "created_at": {
+        "$date": "2025-01-07T15:37:20.754Z"
+      },
+      "is_synced": true,
+      "synced_on": {
+        "$date": "2025-01-07T15:38:58.876Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "677cfcd8e4db560498219422"
+      },
+      "file_name": "ASSIGNMENT (ver 2017-07-19).docx",
+      "file_type": "docx",
+      "file_path": "/llm development/library/!auto -- motions briefs and issues/covenant/assignments/assignment (ver 2017-07-19).docx",
+      "created_at": {
+        "$date": "2025-01-07T15:37:20.754Z"
+      },
+      "is_synced": true,
+      "synced_on": {
+        "$date": "2025-01-07T15:38:58.876Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "677cfcd8e4db560498219420"
+      },
+      "file_name": "MI Assignment of Rights - WORD (002).docx",
+      "file_type": "docx",
+      "file_path": "/llm development/library/!auto -- motions briefs and issues/covenant/assignments/mi assignment of rights - word (002).docx",
+      "created_at": {
+        "$date": "2025-01-07T15:37:20.753Z"
+      },
+      "is_synced": true,
+      "synced_on": {
+        "$date": "2025-01-07T15:38:58.876Z"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "677cfcd8e4db56049821941f"
+      },
+      "file_name": "KAPSO ASSIGNMENT 2019-11-09.docx",
+      "file_type": "docx",
+      "file_path": "/llm development/library/!auto -- motions briefs and issues/covenant/assignments/kapso assignment 2019-11-09.docx",
+      "created_at": {
+        "$date": "2025-01-07T15:37:20.753Z"
+      },
+      "is_synced": true,
+      "synced_on": {
+        "$date": "2025-01-07T15:38:58.876Z"
+      }
+    }
+  ],
+  "status_code": 200
+}
+
+
+// api/get-all-sessions?skip=1&limit=10
+{
+  "total": 41,
+  "skip": 1,
+  "limit": 10,
+  "data": [
+    {
+      "_id": "67a49e042c4cc05fdbf5f18e",
+      "created_at": "2025-02-06T11:33:24.360000",
+      "updated_at": "2025-02-06T11:33:24.360000",
+      "title": "Your response appears to be incomplete. Can you provide the full content, preferably a question and its relevant answer? I'll craft a suitable title based on it.\n\nPlease provide the content for me to generate a concise and descriptive title."
+    },
+    {
+      "_id": "67a49a542c4cc05fdbf5f18b",
+      "created_at": "2025-02-06T11:17:40.189000",
+      "updated_at": "2025-02-06T11:17:40.189000",
+      "title": "Based on the provided content, I would suggest the following title options:\n\n1. \"Improving Response to User Greetings\"\n2. \"Handling Basic User Interface Interactions\"\n3. \"Initial User Greeting Best Practices\"\n\nHowever, without more context or details, it is challenging to create a title that is concise, engaging, and accurate. If you could provide more information about the content or the context in which it is being used, I would be happy to assist you further. \n\nAssuming the context of an AI system, a title that captures the essence of the topic could be:\n\n\"Optimizing AI Response to User Greetings\"\n\nIf the content is more general and doesn't outline a specific topic or problem, a more neutral title would be:\n\n\"Effective User Interaction Strategies\"\n\nA concise title based on minimal context could be,\n\n\"Responding to User Greetings\"\n\nHowever, keep in mind that these titles assume the context is related to computer science or artificial intelligence. Without more context, I can only provide general suggestions.\n\nAssuming the content might be for a more user-centric site, and providing as best a case title for those cases,\n\n\"How to Greet Online Users\""
+    },
+    {
+      "_id": "67a499ec2c4cc05fdbf5f189",
+      "created_at": "2025-02-06T11:15:56.359000",
+      "updated_at": "2025-02-06T11:15:56.359000",
+      "title": "\"Commonly Asked Questions and Answers Available\"\n\nHowever, considering the content provided is more of a placeholder, a more fitting and concise title would be:\n\n\"Available Q&A Support Options Exist\""
+    },
+    {
+      "_id": "67a48eb92c4cc05fdbf5f185",
+      "created_at": "2025-02-06T10:28:09.399000",
+      "updated_at": "2025-02-06T10:28:09.399000",
+      "title": "Unfortunately, the content provided does not give enough information to craft a title. However, I can ask you to provide more context or information so I can generate a title for a potential question and answer session.\n\nHowever, assuming the generated response had some information, a possible title could be:\n\"Understanding AI Generated Responses\"\n\nHowever, with the content you have provided, the most generic title I can suggest is:\n\"AI Response Generation\""
+    },
+    {
+      "_id": "67a48e4d2c4cc05fdbf5f183",
+      "created_at": "2025-02-06T10:26:21.585000",
+      "updated_at": "2025-02-06T10:26:21.585000",
+      "title": "I'd be happy to help you create a concise, engaging, and professional title. Given the current content, here are a few options:\n\n1. \"Initial Greeting Established with AI Response\"\n2. \"AI Engages with User's First Message\"\n3. \"Welcome Response from Conversational AI\"\n4. \"Chat Initiation with AI Confirmation\"\n5. \"AI Acknowledges Initial User Inquiry\"\n\nHowever, since the question is just \"hello\" and the response is a generated one and has no further content, I can suggest something even more fitting:\n\n1. \"Conversation Started with AI Acknowledgment\"\n2. \"AI Responds to Initial Hello Inquiry\"\n\nPlease let me know if you'd like me to suggest more options or adjust these titles based on your feedback!"
+    },
+    {
+      "_id": "67a48c052c4cc05fdbf5f17f",
+      "created_at": "2025-02-06T10:16:37.289000",
+      "updated_at": "2025-02-06T10:16:37.289000",
+      "title": "Since there isn't much content, I'll create a placeholder title for a question and answer. \n\nHere's a possible title:\n\"Defining the Purpose of this Question\"\n\nThis title captures the essence of expecting more content and possibly leads the user to ask a more in-depth question."
+    },
+    {
+      "_id": "67a487a62836ea331f17484a",
+      "created_at": "2025-02-06T09:57:58.027000",
+      "updated_at": "2025-02-06T09:57:58.027000",
+      "title": "\"What is Airbnb Really?\""
+    },
+    {
+      "_id": "67a486aa3e04b18ba6a06d45",
+      "created_at": "2025-02-06T09:53:46.980000",
+      "updated_at": "2025-02-06T09:53:46.980000",
+      "title": null
+    },
+    {
+      "_id": "67a486aa3e04b18ba6a06d44",
+      "created_at": "2025-02-06T09:53:46.807000",
+      "updated_at": "2025-02-06T09:53:46.807000",
+      "title": null
+    },
+    {
+      "_id": "67a486aa3e04b18ba6a06d43",
+      "created_at": "2025-02-06T09:53:46.640000",
+      "updated_at": "2025-02-06T09:53:46.640000",
+      "title": null
+    }
+  ]
+}

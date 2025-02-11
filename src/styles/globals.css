@@ -1,0 +1,123 @@
+:root {
+  --sidebar-width: 319px;
+}
+
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  tap-highlight-color: transparent;
+}
+
+body * {
+  scrollbar-width: thin;
+}
+
+#__next {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+pre {
+  white-space: pre-wrap;
+}
+
+strong,
+b {
+  font-weight: 600;
+}
+
+img {
+  max-width: 100%;
+  object-fit: cover;
+  object-position: center;
+  height: auto;
+  vertical-align: middle;
+  font-style: italic;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
+}
+
+button,
+option,
+select,
+input[type='file']::-webkit-file-upload-button {
+  font-family: inherit;
+}
+
+/* Animation
+======================== */
+.fadeIn {
+  animation: fadeIn 0.3s forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* Utility Classes
+======================== */
+.height-full {
+  height: 100vh;
+  height: 100dvh;
+}
+
+.min-height-full {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* Icon
+======================== */
+.icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.icon-xs {
+  font-size: 16px;
+}
+
+.icon-sm {
+  font-size: 18px;
+}
+
+.icon-md {
+  font-size: 20px;
+}
+
+.icon-lg {
+  font-size: 22px;
+}
+
+.icon-xl {
+  font-size: 24px;
+}
+
+.icon-xxl {
+  font-size: 26px;
+}

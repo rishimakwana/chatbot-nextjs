@@ -1,0 +1,72 @@
+{
+    "statusCode": 200,
+    "message": "Fetch data",
+    "data": {
+      "list": [
+        {
+          "_id": "67a9fac5f3f9d3e3f4d3189b",
+          "created_at": "2025-02-10T13:10:29.390000",
+          "updated_at": "2025-02-10T13:10:29.390000",
+          "title": "I'm happy to craft a title for this. \n\nHere's a concise, engaging title: \"Understanding Artificial Response Generation\""
+        },
+        {
+          "_id": "67a9d70e2cc24d28965ba23d",
+          "created_at": "2025-02-10T10:38:06.972000",
+          "updated_at": "2025-02-10T10:38:06.972000",
+          "title": "That's quite a challenge with a short input. However, let's generate a title that summarizes the topic in a concise way.\n\n\"Crafting Effective Titles for Your Response\""
+        },
+        {
+          "_id": "67a99e2b162712346f52e254",
+          "created_at": "2025-02-10T06:35:23.587000",
+          "updated_at": "2025-02-10T06:35:23.587000",
+          "title": "\"Understanding the Purpose of Initial Queries\""
+        },
+        {
+          "_id": "67a601b7c564c9b451080f95",
+          "created_at": "2025-02-07T12:51:03.878000",
+          "updated_at": "2025-02-07T12:51:03.878000",
+          "title": "However, I don't see any content other than a basic \"hi\" and a generic response. Could you please provide the actual content you'd like me to work with, so I can craft a more meaningful title?"
+        },
+        {
+          "_id": "67a5fba3c564c9b451080f93",
+          "created_at": "2025-02-07T12:25:07.862000",
+          "updated_at": "2025-02-07T12:25:07.862000",
+          "title": "I'm ready to help. However, I need the content for the question and answer to generate a suitable title. Based on the content you provided earlier, I'll use a default scenario.\n\nSince you provided no actual content, let's say we're crafting a title for a question asking about handling server errors in a modern web development context. \n\nPotential title: \"Resolving Server Errors with Precision\""
+        },
+        {
+          "_id": "67a5fb42c564c9b451080f91",
+          "created_at": "2025-02-07T12:23:30.437000",
+          "updated_at": "2025-02-07T12:23:30.437000",
+          "title": "Unfortunately, the content doesn't provide enough context to create a title. However, I can suggest a general template for you.\n\nIf you provide the actual content or a summary of it, I can assist you better."
+        },
+        {
+          "_id": "67a5f136c564c9b451080f8c",
+          "created_at": "2025-02-07T11:40:38.975000",
+          "updated_at": "2025-02-07T11:40:38.975000",
+          "title": "However, I don't have the content. Please provide the text about which I should craft a title.\n\nOnce you provide the text, I will generate a professional, concise, and engaging title that met your requirements."
+        },
+        {
+          "_id": "67a5ef33c564c9b451080f88",
+          "created_at": "2025-02-07T11:32:03.371000",
+          "updated_at": "2025-02-07T11:32:03.371000",
+          "title": "Unfortunately, the provided content is very brief and doesn't give any detail about what the question or answer is about. However, I can suggest a few title options that are general and might apply to a wide range of questions:\n\n1. \"Answer to Your Question Provided Here\"\n2. \"Information Available Upon Request Received\"\n3. \"Query Response Prepared for You\"\n4. \"Providing Solutions to Your Concerns\"\n5. \"Helpful Answer to Your Inquiry Presented\"\n\nIf you could provide more context or a detailed question, I could give you more accurate and specific title options."
+        },
+        {
+          "_id": "67a5e7aac564c9b451080f7b",
+          "created_at": "2025-02-07T10:59:54.315000",
+          "updated_at": "2025-02-07T10:59:54.315000",
+          "title": "However, to provide a helpful title, I need more context or information about the generated response. Can you please provide more details about the response, or would you like me to craft a generic placeholder title based on the current content?\n\nIf you provide the actual content, I can modify the title accordingly. For now, a generic placeholder title could be \"A Brief Response\""
+        },
+        {
+          "_id": "67a5e74cc564c9b451080f79",
+          "created_at": "2025-02-07T10:58:20.954000",
+          "updated_at": "2025-02-07T10:58:20.954000",
+          "title": "I'd be happy to craft a title for you.\n\nGenerated title: \"Common Issues with AI Conversational Systems\"\n\nHowever, since your content is not specific to a particular topic, I can adjust the title to be more general and still relevant:\n\n Generated title: \"Optimizing AI Conversational Experiences\"\n\nIf I had more context about the generated response or topic, I would be happy to provide a more specific title."
+        }
+      ],
+      "totalItems": 45,
+      "currentPage": 1,
+      "totalPages": 5,
+      "totalCount": 45
+    }
+  }
