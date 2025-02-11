@@ -1,0 +1,28 @@
+{
+  "statusCode": 200,
+  "message": "Fetch data",
+  "data": {
+    "list": [
+      {
+        "_id": "67a9ca051b02b44063cb1c62",
+        "file_name": "Airbnb doc-compressed.pdf"
+      },
+      {
+        "_id": "67a9d1812b636a27c90edc77",
+        "file_name": "Airbnb doc.pdf"
+      },
+      {
+        "_id": "67a9d1d22b636a27c90edc78",
+        "file_name": "Airbnb doc.pdf"
+      },
+      {
+        "_id": "67a9d2caa375bc54838d5d99",
+        "file_name": "Airbnb doc-compressed.pdf"
+      }
+    ],
+    "totalItems": 4,
+    "currentPage": 1,
+    "totalPages": 1,
+    "totalCount": 4
+  }
+}
