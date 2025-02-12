@@ -47,23 +47,17 @@ export default function Header() {
         {data && data.list.length > 0 && (
           <>
             {data.list.map((file: any, index: number) => (
-              <Card key={index} sx={style.docCard}>
-                <CardContent>
-                  <Image src={pdfImage} alt="pdf" width={40} height={40} />
-                  <Typography variant="body2" sx={style.docCardText}>
-                    {file.file_name}
-                  </Typography>
-                </CardContent>
-              </Card>
+              <Stack key={index} sx={style.docCard}>
+                <Image src={pdfImage} alt="pdf" width={18} height={20} />
+                <Typography variant="body2" color='primary.main' sx={style.docCardText}>{file.file_name}</Typography>
+              </Stack>
             ))}
             {/* Upload Button as a Card */}
-            <Card sx={style.uploadCard}>
-              <CardContent sx={{ textAlign: 'center' }}>
-                <CiCirclePlus size={28} />
-                <VisuallyHiddenInput onChange={handleFileChangeAndSubmit} />
-                <Typography variant="body2">Upload File</Typography>
-              </CardContent>
-            </Card>
+            <Stack sx={{...style.docCard, cursor: 'pointer'}}>
+              <CiCirclePlus size={28} />
+              <VisuallyHiddenInput onChange={handleFileChangeAndSubmit} />
+              <Typography variant="body2" color='primary.main' fontSize={11}>Upload File</Typography>
+            </Stack>
           </>
         )}
       </Box>

@@ -4,14 +4,14 @@ import { CiSettings } from 'react-icons/ci'
 import { BsPlusLg } from 'react-icons/bs'
 import { LuCrown } from 'react-icons/lu'
 
-import { IoSearch, IoSettingsOutline, IoArrowUpOutline } from 'react-icons/io5'
+import { IoSearch, IoSettingsOutline } from 'react-icons/io5'
+import { WiStars } from 'react-icons/wi'
 import { Stack, Box, Typography, IconButton, InputAdornment, TextField, List, ListItem, ListItemText, ListItemButton, Avatar, Button, Tooltip, CircularProgress } from '@mui/material'
 
 import { useReduxDispatch, useReduxSelector } from '@/hooks'
 import Logo from '@/components/logo/Logo.component'
 import { style } from './DesktopSidebar.style'
 import { useGetAllSessionsQuery } from '@/redux/api/chat.api'
-import RenderContent from '@/components/renderContent/RenderContent.component'
 import Link from 'next/link'
 import { clearMessages } from '@/redux/slice/chat.slice'
 
@@ -110,12 +110,12 @@ export default function DesktopSidebar() {
             {isSuccess && !isLoading && chats.length > 0 ? (
               <>
                 {/* Recent Chats */}
-                <Typography variant="h4" color="text.secondary">
+                <Typography variant="h3" color="text.secondary" fontWeight={500}>
                   Recent Chats
                 </Typography>
                 <List sx={{ flex: 1, overflow: 'auto' }}>
-                  {chats.map((chat,index) => (
-                    <ListItem  key={chat._id || index} disablePadding>
+                  {chats.map((chat, index) => (
+                    <ListItem key={chat._id || index} disablePadding>
                       <Tooltip title={collapsed ? chat.title : ''} placement="right">
                         <Link href={`/chat/${chat._id}`} passHref>
                           <ListItemButton sx={{ borderRadius: 1, mb: 0.5, '&:hover': { bgcolor: 'action.hover' } }}>
@@ -145,14 +145,22 @@ export default function DesktopSidebar() {
                 </List>
               </>
             ) : (
-              <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', mt: 2 }}>
-                No recent chats
-              </Typography>
+              <List sx={{ flex: 1, overflow: 'auto' }}>
+                <ListItem disablePadding>
+                  <ListItemText>
+                    <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center' }}>
+                      No recent chats
+                    </Typography>
+                  </ListItemText>
+                </ListItem>
+              </List>
             )}
 
             {/* Upgrade Plan */}
-            <Stack spacing={1} direction={'row'} py={3}>
-              <IoArrowUpOutline size={20} />
+            <Stack spacing={1} direction={'row'} bgcolor={'#EBECF0'} borderRadius={2} p={1.5}>
+              <Stack sx={{ width:32, height: 32, border: '1px solid #00163E', bgcolor: 'white', borderRadius: 10, p: 1, alignItems: 'center', justifyContent: 'center', justifySelf: 'center' }}> 
+                <WiStars size={22} />
+              </Stack>
               <Stack spacing={0.5}>
                 <Typography variant="body1">Upgrade Plan</Typography>
                 <Typography variant="body2">Access more features with new plans</Typography>

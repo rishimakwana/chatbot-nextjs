@@ -33,7 +33,7 @@ b {
   font-weight: 600;
 }
 
-img {
+/* img {
   max-width: 100%;
   object-fit: cover;
   object-position: center;
@@ -42,7 +42,7 @@ img {
   font-style: italic;
   background-repeat: no-repeat;
   background-size: cover;
-}
+} */
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -122,9 +122,9 @@ input[type='file']::-webkit-file-upload-button {
   font-size: 26px;
 }
 
-.bot-avatar {
+/* .bot-avatar {
     border-radius: 100%;
     border: 1px solid #EBECF0;
     background-color: #fff;
     padding: 8px;
-}
+} */

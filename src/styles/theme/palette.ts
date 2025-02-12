@@ -11,7 +11,7 @@ export const createPalette = () => {
       contrastText: '#FFFFFF',
     },
     error: {
-      main: '#FF2500',
+      main: '#FF6059',
       contrastText: '#FFFFFF',
     },
     success: {
@@ -25,12 +25,10 @@ export const createPalette = () => {
     blue: {
       main: '#B2B5C5',
       contrastText: '#FFFFFF',
-      // main: '#00163E',
-      // contrastText: '#ffffff',
     },
     text: {
-      primary: '#00163E',
-      secondary: '#6D6E70',
+      primary: '#7D82A1',
+      secondary: '#00163E',
       disabled: 'rgb(0 0 0 / .41)',
     },
     background: {
@@ -38,7 +36,7 @@ export const createPalette = () => {
       paper: '#fff',
     },
     orange: {
-      main: '#FF2500',
+      main: '#FF6059',
       contrastText: '#ffffff',
     },
   } as Theme['palette']
@@ -61,6 +59,5 @@ declare module '@mui/material/Button' {
   interface ButtonPropsColorOverrides {
     blue: true,
     orange: true
-
   }
 }

@@ -7,9 +7,18 @@ export const style: TStyle = {
     width: '100%',
   },
   bot_avatar:{
-    borderRadius: '100%', 
+    position: 'relative',
+    width: 40,
+    height: 40,
+    minWidth: 40,
+    borderRadius: 300, 
+    alignItems: 'center',
+    justifyContent: 'center',
     border: '1px solid #EBECF0', 
-    bgcolor: '#fff',
-    p: 1,
+    '& img': {
+      width: '24px',
+      height: '24px',
+      objectFit: 'contain',
+    }
   }
 }

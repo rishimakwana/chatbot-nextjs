@@ -1,28 +1,21 @@
 import { Theme, ThemeOptions } from '@mui/material'
-import { Barlow, Figtree, Righteous } from 'next/font/google'
+import { Righteous, Livvic  } from 'next/font/google'
 
-const barlow = Barlow({
-  display: 'swap',
+const livvic = Livvic({ 
+  display: 'swap', 
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700', '800'],
-})
-
-const figtree = Figtree({
-  display: 'swap',
-  subsets: ['latin'],
-})
+  weight: ['400', '500', '600', '700']
+ })
 
 const righteous = Righteous({
   display: 'swap',
   subsets: ['latin'],
-  weight: ['400'],
+  weight: ['400']
 })
 
 export const createTypography = () => {
   return {
-    // fontFamily: `${barlow.style.fontFamily}, system-ui, sans-serif`,
-    fontFamily: `${figtree.style.fontFamily}, system-ui, sans-serif`,
-    // fontFamily: `${righteous.style.fontFamily}, system-ui, sans-serif`,
+    fontFamily: `${livvic.style.fontFamily}, system-ui, sans-serif`,
     display1: {
       fontSize: 48,
       fontWeight: 700,
@@ -55,17 +48,18 @@ export const createTypography = () => {
     },
     body1: {
       fontSize: 16,
-      fontWeight: 500,
-      lineHeight: 1.2,
+      fontWeight: 400,
+      lineHeight: 1.6,
     },
     body2: {
       fontSize: 14,
-      fontWeight: 500,
+      fontWeight: 400,
       lineHeight: 1.2,
     },
     button: {
       textTransform: 'unset',
       lineHeight: 1.2,
+      fontFamily: `${righteous.style.fontFamily}, system-ui, sans-serif`,
     },
   } as Theme['typography']
 }
