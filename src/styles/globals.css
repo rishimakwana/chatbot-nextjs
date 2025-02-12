@@ -121,3 +121,10 @@ input[type='file']::-webkit-file-upload-button {
 .icon-xxl {
   font-size: 26px;
 }
+
+.bot-avatar {
+    border-radius: 100%;
+    border: 1px solid #EBECF0;
+    background-color: #fff;
+    padding: 8px;
+}

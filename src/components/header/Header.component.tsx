@@ -1,30 +1,18 @@
 import { useForm } from 'react-hook-form'
-import { Box, Button, Card, CardContent, Container, IconButton, Stack, Typography } from '@mui/material'
+import { Box, Button, Card, CardContent, Stack, Typography } from '@mui/material'
 import { AiOutlineUpload } from 'react-icons/ai'
-import { styled } from '@mui/material/styles'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useUploadPdfMutation } from '@/redux/api/common.api'
 import { schema, TSchema } from './Header.config'
 import { style } from './Header.style'
 import Image from 'next/image'
-import pdfImage from '@/../public/images/pages/pdfimage.svg'
+import pdfImage from '@/../public/images/pages/pdf.png'
 import seeAllDoc from '@/../public/images/pages/seealldocs.svg'
 import { useGetAllDocumentsQuery } from '@/redux/api/documents.api'
 import { useState } from 'react'
 import { CiCirclePlus } from 'react-icons/ci'
 import Link from 'next/link'
-
-const VisuallyHiddenInput = styled('input')({
-  clip: 'rect(0 0 0 0)',
-  clipPath: 'inset(50%)',
-  height: 1,
-  overflow: 'hidden',
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-  whiteSpace: 'nowrap',
-  width: 1,
-})
+import VisuallyHiddenInput from '../hiddenInput/HiddenInput.component'
 
 export default function Header() {
   const [uploadPdf, { isLoading }] = useUploadPdfMutation()
@@ -38,7 +26,6 @@ export default function Header() {
     },
   })
 
-  
   const { data, isLoading: docsLoading, isError, isSuccess } = useGetAllDocumentsQuery({ skip, limit })
   const handleFileChangeAndSubmit = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -69,17 +56,12 @@ export default function Header() {
                 </CardContent>
               </Card>
             ))}
-            <Card sx={style.docCard}>
-              <CardContent>
-                <Box display="flex" flexDirection="column" alignItems="center">
-                  <Box width={40} height={40}>
-                    <CiCirclePlus size={28} />
-                  </Box>
-                  <VisuallyHiddenInput type="file" onChange={handleFileChangeAndSubmit} />
-                  <Typography variant="body2" sx={style.docCardText}>
-                    Upload File
-                  </Typography>
-                </Box>
+            {/* Upload Button as a Card */}
+            <Card sx={style.uploadCard}>
+              <CardContent sx={{ textAlign: 'center' }}>
+                <CiCirclePlus size={28} />
+                <VisuallyHiddenInput onChange={handleFileChangeAndSubmit} />
+                <Typography variant="body2">Upload File</Typography>
               </CardContent>
             </Card>
           </>
@@ -93,7 +75,7 @@ export default function Header() {
         ) : (
           <Button component="label" variant="contained" disabled={isLoading} startIcon={<AiOutlineUpload />}>
             Upload files
-            <VisuallyHiddenInput type="file" onChange={handleFileChangeAndSubmit} />
+            <VisuallyHiddenInput onChange={handleFileChangeAndSubmit} />
           </Button>
         )}
       </Box>

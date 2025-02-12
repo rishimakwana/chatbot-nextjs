@@ -7,14 +7,16 @@ import { LuCrown } from 'react-icons/lu'
 import { IoSearch, IoSettingsOutline, IoArrowUpOutline } from 'react-icons/io5'
 import { Stack, Box, Typography, IconButton, InputAdornment, TextField, List, ListItem, ListItemText, ListItemButton, Avatar, Button, Tooltip, CircularProgress } from '@mui/material'
 
-import { useReduxSelector } from '@/hooks'
+import { useReduxDispatch, useReduxSelector } from '@/hooks'
 import Logo from '@/components/logo/Logo.component'
 import { style } from './DesktopSidebar.style'
 import { useGetAllSessionsQuery } from '@/redux/api/chat.api'
 import RenderContent from '@/components/renderContent/RenderContent.component'
 import Link from 'next/link'
+import { clearMessages } from '@/redux/slice/chat.slice'
 
 export default function DesktopSidebar() {
+  const dispatch = useReduxDispatch()
   const sidebarRef = useRef<HTMLElement | null>(null)
   const observerRef = useRef<HTMLElement | null>(null)
   const { isLoggedIn } = useReduxSelector((state) => state.user)
@@ -83,7 +85,7 @@ export default function DesktopSidebar() {
             )}
 
             {/* New Chat Button */}
-            <Button component={Link} variant="contained" fullWidth href="/" endIcon={<BsPlusLg size={18} />}>
+            <Button component={Link} variant="contained" fullWidth href="/" endIcon={<BsPlusLg size={18} />} onClick={() => dispatch(clearMessages())}>
               New Chat
             </Button>
 
@@ -104,14 +106,13 @@ export default function DesktopSidebar() {
               }}
             />
 
-            {/* Recent Chats */}
-            <Typography variant="body2" color="text.secondary">
-              Recent Chats
-            </Typography>
-
             {/* Recent Chats List */}
-            <RenderContent loading={isLoading && skip === 1} error={isError}>
-              {isSuccess && chats.length > 0 ? (
+            {isSuccess && !isLoading && chats.length > 0 ? (
+              <>
+                {/* Recent Chats */}
+                <Typography variant="h4" color="text.secondary">
+                  Recent Chats
+                </Typography>
                 <List sx={{ flex: 1, overflow: 'auto' }}>
                   {chats.map((chat) => (
                     <ListItem key={chat.id} disablePadding>
@@ -142,12 +143,12 @@ export default function DesktopSidebar() {
                     {isLoading && <CircularProgress size={20} />}
                   </ListItem>
                 </List>
-              ) : (
-                <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', mt: 2 }}>
-                  No recent chats
-                </Typography>
-              )}
-            </RenderContent>
+              </>
+            ) : (
+              <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', mt: 2 }}>
+                No recent chats
+              </Typography>
+            )}
 
             {/* Upgrade Plan */}
             <Stack spacing={1} direction={'row'} py={3}>

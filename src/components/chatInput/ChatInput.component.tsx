@@ -9,11 +9,10 @@ import { style } from './ChatInput.style'
 
 interface ChatInputProps {
   onNewMessage: (message: Message) => void
-  // toggleLoading: (state: boolean) => void
-  classname?: string
+  setIsChatLoading: (state: boolean) => void
 }
 
-export default function ChatInput({ onNewMessage, classname }: ChatInputProps) {
+export default function ChatInput({ onNewMessage, setIsChatLoading }: ChatInputProps) {
   const [message, setMessage] = useState('')
   const router = useRouter()
   const [currentSessionId, setCurrentSessionId] = useState<string | undefined>(undefined)
@@ -28,28 +27,28 @@ export default function ChatInput({ onNewMessage, classname }: ChatInputProps) {
   }, [router.query])
 
   const handleSendMessage = async () => {
+    setIsChatLoading(true)
     const trimmedMessage = message.trim()
     if (!trimmedMessage) return
 
     onNewMessage({ type: 'user', content: trimmedMessage })
     setMessage('')
-    // toggleLoading(true)
 
     try {
       const sessionId = currentSessionId || (await addSession().unwrap()).sessionId
       if (!currentSessionId) setCurrentSessionId(sessionId)
 
-      const response = await sendMessage({ session_id: sessionId, query: trimmedMessage, isFirstChat: !currentSessionId }).unwrap()
-
-      console.log('response', response)
-
-      onNewMessage({ type: 'bot', content: response.answer, files: response.file_name, temp_link: response.temp_link })
-
-      if (isNewChat) router.push(`/chat/${sessionId}`)
+      if (isNewChat) {
+        router.push(`/chat/${sessionId}?isNewChat=true`, undefined, { shallow: true })
+      } else {
+        const response = await sendMessage({ session_id: sessionId, query: trimmedMessage, isFirstChat: !currentSessionId }).unwrap()
+        console.log('response', response)
+        onNewMessage({ type: 'bot', content: response.answer, files: response.file_name, temp_link: response.temp_link })
+      }
     } catch (error) {
       console.error('Failed to send message:', error)
     } finally {
-      // toggleLoading(false)
+      setIsChatLoading(false)
     }
   }
 
@@ -77,7 +76,7 @@ export default function ChatInput({ onNewMessage, classname }: ChatInputProps) {
   const hasInput = message.trim().length > 0
 
   return (
-    <Stack gap={2}>
+    <Stack gap={2} width={ isNewChat ? '80%' : '100%'}>
       <Stack alignItems={'center'}>
         <TextField
           fullWidth

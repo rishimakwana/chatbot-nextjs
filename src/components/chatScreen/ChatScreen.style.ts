@@ -6,9 +6,10 @@ export const style: TStyle = {
     height: 'calc(100vh - 100px)',
     width: '100%',
   },
-  welcome_text:{
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+  bot_avatar:{
+    borderRadius: '100%', 
+    border: '1px solid #EBECF0', 
+    bgcolor: '#fff',
+    p: 1,
   }
 }

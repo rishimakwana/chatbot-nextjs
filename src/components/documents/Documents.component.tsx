@@ -1,27 +1,21 @@
 import Link from 'next/link'
-import { useCallback, useState } from 'react'
+import Image from 'next/image'
+import { useCallback } from 'react'
 import { useRouter } from 'next/router'
 import { IoSearch } from 'react-icons/io5'
 import { GoArrowLeft } from 'react-icons/go'
-import { Box, Grid2, IconButton, InputAdornment, Pagination, Paper, Stack, TextField, Typography } from '@mui/material'
+import { Box, Grid2, IconButton, Pagination, Paper, Stack, TextField, Typography } from '@mui/material'
 
-import { usePagination, useReduxSelector } from '@/hooks'
+import { usePagination } from '@/hooks'
 import { useGetAllDocumentsQuery } from '@/redux/api/documents.api'
-import { CgMoreVertical } from 'react-icons/cg'
 import { MdCancel } from 'react-icons/md'
-import pdfImage from '@/../public/images/pages/pdfimage.svg'
-import Image from 'next/image'
+import pdfImage from '@/../public/images/pages/pdf.png'
 import RenderContent from '../renderContent/RenderContent.component'
 
 export default function Documents() {
   const router = useRouter()
   const { paginationModel, setPaginationModel, skip, limit, pageSize } = usePagination()
-
   const { data, isLoading, isError, isSuccess } = useGetAllDocumentsQuery({ skip, limit })
-
-  console.log(limit, 'limit', data?.totalCount)
-  // const DocumentAPIResponse = useGetAllDocumentsQuery({ skip, limit })
-  // console.log(DocumentAPIResponse, 'DocumentAPIResponse')
 
   const handlePageChange = useCallback(
     (event: any, newPage: number) => {
@@ -44,7 +38,6 @@ export default function Documents() {
     [router],
   )
 
-  console.log(data, 'ggggggggggggggg', isSuccess)
   return (
     <>
       <Stack direction={'row'} justifyContent={'space-between'} px={4} py={2} sx={{ bgcolor: 'background.paper' }} alignItems={'center'}>
