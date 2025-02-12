@@ -114,8 +114,8 @@ export default function DesktopSidebar() {
                   Recent Chats
                 </Typography>
                 <List sx={{ flex: 1, overflow: 'auto' }}>
-                  {chats.map((chat) => (
-                    <ListItem key={chat.id} disablePadding>
+                  {chats.map((chat,index) => (
+                    <ListItem  key={chat._id || index} disablePadding>
                       <Tooltip title={collapsed ? chat.title : ''} placement="right">
                         <Link href={`/chat/${chat._id}`} passHref>
                           <ListItemButton sx={{ borderRadius: 1, mb: 0.5, '&:hover': { bgcolor: 'action.hover' } }}>

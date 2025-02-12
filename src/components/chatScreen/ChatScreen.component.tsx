@@ -22,27 +22,56 @@ export default function ChatScreen() {
   const router = useRouter()
   const { id } = router.query
 
-  console.log(messages, 'messages---------------------------')
 
-  const { data: chatHistory, isLoading, refetch, isUninitialized } = useGetChatHistoryQuery(typeof id === 'string' ? id : '', { skip: !id })
+  const { data: chatHistory, isLoading, refetch, isUninitialized, isSuccess } = useGetChatHistoryQuery(typeof id === 'string' ? id : '', {
+    skip: !id || router.query.isNewChat === 'true',
+  });
 
-  useEffect(() => {
-    if (router.query.isNewChat && messages[0].content) {
-      (async () => {
-        setIsChatLoading(true)
-        const response = await sendMessage({ session_id: router.query.id as string, query: messages[0].content, isFirstChat: true }).unwrap()
-        dispatch(addMessage({  type: 'bot', content: response.answer, files: response.file_name, temp_link: response.temp_link }))
+  
 
-        setIsChatLoading(false)
-        router.replace({ query: { ...router.query, isNewChat: undefined } }, undefined, { shallow: true })
-      })()
+  const fetchChatResponse = async () => {
+    if (!router.query.isNewChat || !messages[0]?.content) return;
+  
+    try {
+      setIsChatLoading(true);
+      const response = await sendMessage({
+        session_id: router.query.id as string,
+        query: messages[0].content,
+        isFirstChat: true
+      }).unwrap();
+
+      dispatch(addMessage({ 
+        type: 'user', 
+        content: messages[0].content, 
+        files: messages[0].files, 
+        temp_link: messages[0].temp_link 
+      }));
+  
+      dispatch(addMessage({ 
+        type: 'bot', 
+        content: response.answer, 
+        files: response.file_name, 
+        temp_link: response.temp_link 
+      }));
+    } finally {
+      setIsChatLoading(false);
+      router.replace(
+        { query: { ...router.query, isNewChat: undefined } }, 
+        undefined, 
+        { shallow: true }
+      );
     }
-  }, [])
-
+  };
+  
   useEffect(() => {
-    if (!id || isUninitialized) return
-    refetch()
-  }, [id, refetch, isUninitialized])
+    fetchChatResponse();
+  }, []);
+  
+
+  // useEffect(() => {
+  //   if (!id || isUninitialized) return
+  //   refetch()
+  // }, [id, refetch, isUninitialized])
 
   const formattedMessages = useMemo(() => {
     if (!chatHistory) return []

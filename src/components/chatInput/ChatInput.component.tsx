@@ -76,7 +76,7 @@ export default function ChatInput({ onNewMessage, setIsChatLoading }: ChatInputP
   const hasInput = message.trim().length > 0
 
   return (
-    <Stack gap={2} width={ isNewChat ? '80%' : '100%'}>
+    <Stack gap={2} width={isNewChat ? '80%' : '100%'}>
       <Stack alignItems={'center'}>
         <TextField
           fullWidth
