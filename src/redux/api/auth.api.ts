@@ -61,7 +61,7 @@ export const extendedApi = api.injectEndpoints({
 
     getUser: builder.query<UserDTO, void>({
       query: () => '/auth/getProfile',
-      providesTags: ['profile'],
+      // providesTags: ['profile'],
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         await queryFulfilled.then(({ data }) => dispatch(updateUser(data))).catch(() => { })
       },
@@ -69,7 +69,7 @@ export const extendedApi = api.injectEndpoints({
 
     updateProfile: builder.mutation<void, Pick<UserDTO, 'fullName' | 'phone'> & Pick<UserDTO['profile'], 'street' | 'city' | 'zipCode' | 'state'>>({
       query: (body) => ({ url: '/auth/updateProfile', method: 'PUT', body }),
-      invalidatesTags: (result, error) => (!error ? ['profile'] : []),
+      // invalidatesTags: (result, error) => (!error ? ['profile'] : []),
     }),
   }),
 })

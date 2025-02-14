@@ -1,8 +1,8 @@
 import { Theme } from '@mui/material'
 import { GridOverlay } from '@mui/x-data-grid'
-import type { } from '@mui/lab/themeAugmentation'
-import type { } from '@mui/x-data-grid/themeAugmentation'
-import type { } from '@mui/x-date-pickers/themeAugmentation'
+import type {} from '@mui/lab/themeAugmentation'
+import type {} from '@mui/x-data-grid/themeAugmentation'
+import type {} from '@mui/x-date-pickers/themeAugmentation'
 
 export const overridesComponent = (theme: Theme) => {
   return {
@@ -165,8 +165,6 @@ export const overridesComponent = (theme: Theme) => {
             {
               props: { size: 'small' },
               style: theme.unstable_sx({
-                backgroundColor: theme.palette.orange.main,
-                color: theme.palette.orange.contrastText,
                 fontSize: 'body1.fontSize',
                 fontWeight: 500,
                 borderRadius: 2.5,
@@ -177,8 +175,6 @@ export const overridesComponent = (theme: Theme) => {
             {
               props: { size: 'medium' },
               style: theme.unstable_sx({
-                backgroundColor: theme.palette.orange.main,
-                color: theme.palette.orange.contrastText,
                 py: 1.375,
                 px: 2.5,
                 minWidth: { xs: 'unset', sm: 112 },
@@ -190,8 +186,6 @@ export const overridesComponent = (theme: Theme) => {
             {
               props: { size: 'large' },
               style: theme.unstable_sx({
-                backgroundColor: theme.palette.orange.main,
-                color: theme.palette.orange.contrastText,
                 py: 1.5,
                 px: 2.5,
                 minWidth: { xs: 'unset', md: 182 },
@@ -201,65 +195,37 @@ export const overridesComponent = (theme: Theme) => {
               }),
             },
             {
-              props: { size: 'large' },
+              props: { variant: 'outlined' },
               style: theme.unstable_sx({
-                backgroundColor: theme.palette.orange.main,
-                color: theme.palette.orange.contrastText,
+                border: `1px solid #CFD0D7`,
+                color: '#020617',
                 py: 1.5,
                 px: 2.5,
-                minWidth: { xs: 'unset', md: 182 },
                 borderRadius: 2,
-                fontSize: 18,
-                fontWeight: 500,
-              }),
-            },
-            {
-              props: { variant: 'gradient' },
-              style: theme.unstable_sx({
-                backgroundColor: theme.palette.orange.main,
-                color: theme.palette.orange.contrastText,
-                // background: theme.palette.orange.main,
-                position: 'relative',
-                zIndex: 1,
-                overflow: 'hidden',
-                '&.Mui-disabled': {
-                  bgcolor: 'action.disabledBackground',
-                },
-                '&:not(.Mui-disabled)': {
-                  bgcolor: 'var(--bgcolor)',
-                  color: 'var(--color)',
-                  ':before, :after': {
-                    content: `''`,
-                    '--rotate': '45deg',
-                    width: 80,
-                    height: 80,
-                    position: 'absolute',
-                    borderRadius: '100%',
-                    // background: 'linear-gradient(var(--rotate), rgba(255, 255, 255, 0.4) -13.64%, rgba(255, 255, 255, 0) 35.52%)',
-                    // transition: theme.transitions.create(['top', 'bottom']),
-                  },
-                },
-              }),
-            },
-            {
-              props: { variant: 'transparent' },
-              style: theme.unstable_sx({
-                borderColor: '#e0e0e0',
-                textTransform: 'none',
-                padding: '6px 16px',
-                minWidth: 'auto',
+                fontSize: 12,
+                fontWeight: 400,
                 '&:hover': {
-                  borderColor: '#bdbdbd',
-                  backgroundColor: '#f5f5f5',
+                  backgroundColor: '#EBECF0',
+                  borderColor: theme.palette.primary.main,
+                  fontSize: 13,
                 },
-                backgroundColor: 'transparent',
-                color: theme.palette.primary.main,
-                border: '1px solid',
-                fontSize: 'body1.fontSize',
-                fontWeight: 500,
-                borderRadius: 1.5,
-                py: 1.375,
+              }),
+            },
+            {
+              props: { variant: 'orange' },
+              style: theme.unstable_sx({
+                backgroundColor: theme.palette.orange.main,
+                color: theme.palette.orange.contrastText,
+                py: 1.5,
                 px: 2.5,
+                minWidth: { xs: 'unset', md: 182 },
+                borderRadius: 2,
+                fontSize: 18,
+                fontWeight: 500,
+                '&:hover': {
+                  fontSize: 19,
+                  borderColor: theme.palette.primary.main,
+                },
               }),
             },
           ],
@@ -455,7 +421,7 @@ export const overridesComponent = (theme: Theme) => {
 declare module '@mui/material/Button' {
   interface ButtonPropsVariantOverrides {
     gradient: true
-    transparent: true
+    orange: true
   }
 }
 

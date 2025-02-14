@@ -64,7 +64,7 @@ export default function Documents() {
         <RenderContent loading={isLoading} error={isError}>
           {data && (
             <>
-              <Box component="main" px={4} py={2}>
+              <Box component="div" px={4} py={2}>
                 <Grid2 container spacing={2}>
                   {data?.list.map((doc, index) => (
                     <Grid2 key={index} size={{ xs: 12, sm: 6, md: 4 }}>

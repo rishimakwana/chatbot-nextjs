@@ -1,2 +1,2 @@
 export * from './User.dto'
-export * from './SubscriptionPlan.dto'
+export * from './sendMessageResponse.dto'

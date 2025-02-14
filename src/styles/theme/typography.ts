@@ -1,11 +1,11 @@
 import { Theme, ThemeOptions } from '@mui/material'
-import { Righteous, Livvic  } from 'next/font/google'
+import { Righteous, Livvic } from 'next/font/google'
 
-const livvic = Livvic({ 
-  display: 'swap', 
+const livvic = Livvic({
+  display: 'swap',
   subsets: ['latin'],
   weight: ['400', '500', '600', '700']
- })
+})
 
 const righteous = Righteous({
   display: 'swap',
@@ -22,6 +22,7 @@ export const createTypography = () => {
       lineHeight: 1.2,
     },
     display2: {
+      fontFamily: `${righteous.style.fontFamily}, system-ui, sans-serif`,
       fontSize: 32,
       fontWeight: 800,
       lineHeight: 1.2,
@@ -70,7 +71,7 @@ export const overridesTypography = (theme: Theme) => {
       color: 'text.primary',
     }),
     display2: theme.unstable_sx({
-      color: 'text.primary',
+      color: 'text.secondary',
       fontSize: { xs: 28, md: 'display2.fontSize' },
     }),
     h1: theme.unstable_sx({

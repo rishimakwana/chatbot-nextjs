@@ -4,7 +4,8 @@ export const style: TStyle = {
   root: {
     flexFlow: 'row',
     alignItems: 'center',
-    gap: 1.25,
+    gap: 2,
+    mb: 2,
   },
   avatar: {
     height: 48,
