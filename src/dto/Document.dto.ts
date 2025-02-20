@@ -2,5 +2,6 @@ import { TApiBase } from "@/types"
 
 
 export type DocumentDTO = TApiBase & {
-  fileName: string
+  file_name: string,
+  created_at: string
 }

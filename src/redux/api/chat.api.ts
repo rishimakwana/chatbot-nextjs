@@ -1,19 +1,23 @@
 import { sendMessageResponse } from '@/dto';
 import { setNewChat } from '../slice/chat.slice';
 import { api } from './api.config'
+import { TPaginationApiParams, TPaginationApiResponse } from '@/types';
+import { TGetSessionListResponse } from '@/types/session';
 
 export const chatApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    getAllSessions: builder.query<any, { skip?: number; limit?: number }>({
-      query: ({ skip = 0, limit = 10 } = {}) =>
-        `/api/get-all-sessions?skip=${skip}&limit=${limit}`,
-      providesTags: (result) =>
-        result && result.data
+    getAllSessions: builder.query<TPaginationApiResponse<TGetSessionListResponse>, TPaginationApiParams>({
+      query: (params) => ({ url: '/api/get-all-sessions', params }),
+      providesTags: (result, error) =>
+        !error && result?.list
           ? [
-            ...result.data.map(({ _id }: { _id: string }) => ({ type: 'Sessions', id: _id })),
-            { type: 'Sessions', id: 'LIST' },
+            ...result.list.map(({ _id }: { _id: string }) => ({
+              type: "Sessions" as const,
+              id: _id,
+            })),
+            { type: "Sessions" as const, id: "LIST" },
           ]
-          : [{ type: 'Sessions', id: 'LIST' }],
+          : [{ type: "Sessions" as const, id: "LIST" }],
     }),
 
     getSession: builder.query<any, void>({
@@ -58,16 +62,17 @@ export const chatApi = api.injectEndpoints({
     }),
 
     deleteSession: builder.mutation<void, number>({
-      query: (id) => ({ url: `/api/delete-session/${id}`, method: 'DELETE' }),
-      invalidatesTags: (result, error, id) =>
-        !error
-          ? [
-            { type: 'Sessions', id },
-            { type: 'Sessions', id: 'LIST' },
-          ]
-          : [],
+      query: (id) => ({ url: `/api/delete-session?session_id=${id}`, method: 'DELETE' }),
+      //   invalidatesTags: (result, error, id) =>
+      //     !error
+      //       ? [
+      //         { type: 'Sessions', id },
+      //         { type: 'Sessions', id: 'LIST' },
+      //       ]
+      //       : [],
+      invalidatesTags: [{ type: "Sessions", id: "LIST" }],
     }),
   }),
 })
 
-export const { useGetAllSessionsQuery, useGetSessionQuery, useLazyGetSessionQuery, useLazyGetChatHistoryQuery, useGetChatHistoryQuery, useSendMessageMutation, useAddSessionMutation,useDeleteSessionMutation } = chatApi; 
+export const { useGetAllSessionsQuery, useGetSessionQuery, useLazyGetSessionQuery, useLazyGetChatHistoryQuery, useGetChatHistoryQuery, useSendMessageMutation, useAddSessionMutation, useDeleteSessionMutation, useLazyGetAllSessionsQuery } = chatApi; 

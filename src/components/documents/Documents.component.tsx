@@ -1,21 +1,36 @@
+import moment from 'moment'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { useRouter } from 'next/router'
+import { MdCancel } from 'react-icons/md'
 import { IoSearch } from 'react-icons/io5'
 import { GoArrowLeft } from 'react-icons/go'
-import { Box, Grid2, IconButton, Pagination, Paper, Stack, TextField, Typography } from '@mui/material'
+import { Box, debounce, Grid2, IconButton, Pagination, Paper, Stack, TextField, Typography } from '@mui/material'
 
-import { usePagination } from '@/hooks'
-import { useGetAllDocumentsQuery } from '@/redux/api/documents.api'
-import { MdCancel } from 'react-icons/md'
+import { usePagination, useUrlParams } from '@/hooks'
+import { useDeleteDocumentMutation, useGetAllDocumentsQuery } from '@/redux/api/documents.api'
 import pdfImage from '@/../public/images/pages/pdf.png'
 import RenderContent from '../renderContent/RenderContent.component'
+import { TFilter } from '@/layouts/rootLayout/components/sidebar/components/sidebarContent/SidebarContent.type'
+import ConfirmationPopup from '../confirmationPopup/ConfirmationPopup.component'
 
 export default function Documents() {
   const router = useRouter()
-  const { paginationModel, setPaginationModel, skip, limit, pageSize } = usePagination()
-  const { data, isLoading, isError, isSuccess } = useGetAllDocumentsQuery({ skip, limit })
+  const { setUrlParams } = useUrlParams()
+  const { paginationModel, setPaginationModel, page, limit, pageSize } = usePagination()
+  const [deleteItemId, setDeleteItemId] = useState<number | null>(null)
+  const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false)
+
+  const [deleteDocument, { isLoading: isDeleteLoading }] = useDeleteDocumentMutation()
+
+  const filter: TFilter = {
+    searchVal: router.query.searchVal as string,
+    page,
+    limit,
+  }
+  const searchDebounce = useCallback(debounce(setUrlParams, 500), [filter])
+  const { data, isLoading, isError, isSuccess } = useGetAllDocumentsQuery(filter)
 
   const handlePageChange = useCallback(
     (event: any, newPage: number) => {
@@ -24,19 +39,15 @@ export default function Documents() {
     [pageSize, setPaginationModel],
   )
 
-  const handleSearch = useCallback(
-    (value: any) => {
-      router.push(
-        {
-          pathname: router.pathname,
-          query: { ...router.query, search: value, page: 1 },
-        },
-        undefined,
-        { shallow: true },
-      )
-    },
-    [router],
-  )
+  const handleDelete = (id: number) => {
+    setDeleteItemId(id)
+    setOpenDeleteConfirmation(true)
+  }
+
+  const handleCloseDelete = () => {
+    setOpenDeleteConfirmation(false)
+    setDeleteItemId(null)
+  }
 
   return (
     <>
@@ -55,7 +66,7 @@ export default function Documents() {
         <TextField
           placeholder="Search File"
           size="small"
-          // onChange={(e) => searchDebounce({ key: 'searchVal', value: e.target.value })}
+          onChange={(e) => searchDebounce({ key: 'searchVal', value: e.target.value })}
           slotProps={{ input: { startAdornment: <IoSearch style={{ flexShrink: 0 }} /> } }}
           sx={{ width: { xs: 1, sm: 'unset' } }}
         />
@@ -78,10 +89,10 @@ export default function Documents() {
                       >
                         <Image src={pdfImage} alt="pdf" width={40} height={40} />
                         <Box sx={{ flexGrow: 1, minWidth: 0 }}>
-                          <Typography variant="body1">doc.name</Typography>
-                          <Typography variant="body1">file.date • file.size</Typography>
+                          <Typography variant="body1">{doc.file_name}</Typography>
+                          <Typography variant="body1">{moment(doc.created_at).format()}</Typography>
                         </Box>
-                        <IconButton size="small">
+                        <IconButton onClick={() => handleDelete(doc._id)} size="small">
                           <MdCancel size={16} />
                         </IconButton>
                       </Paper>
@@ -98,6 +109,23 @@ export default function Documents() {
           )}
         </RenderContent>
       </Stack>
+
+      {/* Delete Confirmation */}
+      {openDeleteConfirmation && (
+        <ConfirmationPopup
+          key="deletePopup"
+          heading="Delete Document"
+          subheading={`Are you sure to delete this document?`}
+          acceptButtonText="Delete"
+          loading={isDeleteLoading}
+          onCancel={handleCloseDelete}
+          onAccept={() =>
+            deleteDocument(deleteItemId as number)
+              .unwrap()
+              .then(handleCloseDelete)
+          }
+        />
+      )}
     </>
   )
 }

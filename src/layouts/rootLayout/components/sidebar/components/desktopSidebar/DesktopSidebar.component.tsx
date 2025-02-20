@@ -1,16 +1,17 @@
 import { useEffect, useRef } from 'react'
-import { IconButton, Stack } from '@mui/material'
+import { IconButton, Stack, SwipeableDrawer } from '@mui/material'
 import { GoSidebarCollapse } from 'react-icons/go'
 
 import Logo from '@/components/logo/Logo.component'
 import SidebarContent from '../sidebarContent/SidebarContent.component'
 import { style } from './DesktopSidebar.style'
-import { useReduxDispatch } from '@/hooks'
+import { useReduxDispatch, useReduxSelector } from '@/hooks'
 import { setSidebarDrawer } from '@/redux/slice/layout.slice'
 
 export default function DesktopSidebar() {
   const sidebarRef = useRef<HTMLElement | null>(null)
   const dispatch = useReduxDispatch()
+  const sidebarDrawer = useReduxSelector((state) => state.layout.sidebarDrawer)
 
   useEffect(() => {
     const sidebarElement = sidebarRef.current!
@@ -34,7 +35,7 @@ export default function DesktopSidebar() {
       {/* Logo */}
       <Stack direction="row" alignItems="center" justifyContent="space-between">
         <Logo />
-        <IconButton onClick={() => dispatch(setSidebarDrawer(true))}>
+        <IconButton onClick={() => dispatch(setSidebarDrawer(!sidebarDrawer))}>
           <GoSidebarCollapse className="icon-xxl" />
         </IconButton>
       </Stack>

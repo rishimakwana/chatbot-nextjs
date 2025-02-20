@@ -16,5 +16,5 @@ export const usePagination = (size = 10) => {
     router.replace({ query: { ...router.query, page: page + 1, pageSize }, hash }, undefined, { shallow: true, scroll: true })
   }
 
-  return { paginationModel, setPaginationModel, skip: page, pageSize, limit: pageSize }
+  return { paginationModel, setPaginationModel, page, pageSize, limit: pageSize }
 }

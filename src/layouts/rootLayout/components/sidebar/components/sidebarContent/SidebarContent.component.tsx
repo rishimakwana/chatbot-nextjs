@@ -1,50 +1,77 @@
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { WiStars } from 'react-icons/wi'
-import { BsPlusLg, BsThreeDots } from 'react-icons/bs'
+import { GoPencil } from 'react-icons/go'
 import { IoSearch } from 'react-icons/io5'
+import { MdDeleteForever } from 'react-icons/md'
+import { BsPlusLg, BsThreeDots } from 'react-icons/bs'
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { Stack, Typography, InputAdornment, TextField, List, ListItem, ListItemText, ListItemButton, Button, IconButton, Menu, MenuItem, ListItemIcon, Fab } from '@mui/material'
+import { Stack, Typography, InputAdornment, TextField, List, ListItem, ListItemText, ListItemButton, Button, IconButton, Menu, MenuItem, ListItemIcon, Fab, debounce } from '@mui/material'
 
 import { style } from './SidebarContent.style'
-import { useReduxDispatch } from '@/hooks'
-import { useDeleteSessionMutation, useGetAllSessionsQuery } from '@/redux/api/chat.api'
-import { TAction } from './SidebarContent.type'
-import { GoPencil } from 'react-icons/go'
-import { MdDeleteForever } from 'react-icons/md'
+import { useUrlParams } from '@/hooks'
+import { useDeleteSessionMutation, useGetAllSessionsQuery, useLazyGetAllSessionsQuery } from '@/redux/api/chat.api'
+import { TAction, TFilter } from './SidebarContent.type'
 import ConfirmationPopup from '@/components/confirmationPopup/ConfirmationPopup.component'
 
 export default function SidebarContent() {
-  const dispatch = useReduxDispatch()
-  const [skip, setSkip] = useState(1)
+  const { setUrlParams } = useUrlParams()
+  const router = useRouter()
+  const [page, setPage] = useState(1)
   const [chats, setChats] = useState<any[]>([])
-  const observerRef = useRef<HTMLElement | null>(null)
+  const [isLoadingMore, setIsLoadingMore] = useState(false)
   const [deleteItemId, setDeleteItemId] = useState<number | null>(null)
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false)
-  const limit = 10
-  const [deleteSession, { isLoading: isDeleteLoading }] = useDeleteSessionMutation()
+  const [limit, setLimit] = useState(10)
+  const [searchVal, setSearchVal] = useState((router.query.searchVal as string) || '')
 
-  const { data, isLoading, isSuccess } = useGetAllSessionsQuery({ skip, limit })
+  const [deleteSession, { isLoading: isDeleteLoading }] = useDeleteSessionMutation()
+  const chatsRef = useRef<HTMLUListElement | null>(null)
+  const observerRef = useRef<IntersectionObserver | null>(null)
+
+  const filter: TFilter = {
+    searchVal,
+    page,
+    limit,
+  }
+
+  const searchDebounce = useCallback(debounce(setUrlParams, 500), [filter])
+
+  const [trigger, { data, isLoading, isSuccess, isFetching }] = useLazyGetAllSessionsQuery()
 
   useEffect(() => {
-    if (isSuccess && data && data.list) {
-      setChats((prevChats) => {
-        const existingIds = new Set(prevChats.map((chat) => chat._id))
-        const newChats = data.list.filter((chat: any) => !existingIds.has(chat._id))
-        return [...prevChats, ...newChats]
+    trigger(filter)
+      .unwrap()
+      .then((res) => {
+        setChats((prevChats) => (page === 1 ? res.list : [...prevChats, ...res.list]))
+        setIsLoadingMore(res.list.length === limit)
       })
-    }
-  }, [data, isSuccess])
+  }, [page, searchVal])
 
-  const handleScroll = useCallback(
-    (entries: IntersectionObserverEntry[]) => {
-      const target = entries[0]
-      if (target.isIntersecting && !isLoading) {
-        setSkip((prevSkip) => prevSkip + 1)
-      }
-    },
-    [isLoading],
-  )
+  const loadMoreSessions = () => {
+    if (isLoadingMore) return
+    setIsLoadingMore(true)
+    setPage((prev) => prev + 1)
+  }
+  useEffect(() => {
+    if (!chatsRef.current) return
+    if (observerRef.current) {
+      observerRef.current.disconnect()
+    }
+
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          loadMoreSessions()
+        }
+      },
+      { threshold: 1.0 },
+    )
+    const lastItem = chatsRef.current.lastElementChild
+    if (lastItem) observerRef.current.observe(lastItem)
+    return () => observerRef.current?.disconnect()
+  }, [chats, isFetching])
 
   const handleClose = () => setTimeout(() => setAnchorEl(null), 200)
 
@@ -57,12 +84,10 @@ export default function SidebarContent() {
     }
   }
 
-  useEffect(() => {
-    if (!observerRef.current) return
-    const observer = new IntersectionObserver(handleScroll, { threshold: 1.0 })
-    observer.observe(observerRef.current)
-    return () => observer.disconnect()
-  }, [handleScroll])
+  const handleCloseDelete = () => {
+    setOpenDeleteConfirmation(false)
+    setDeleteItemId(null)
+  }
 
   const ACTIONS: TAction[] = [
     { label: 'Rename', Icon: GoPencil, color: 'primary', onClick: (id: number) => handleActionClick('rename', id) },
@@ -79,11 +104,14 @@ export default function SidebarContent() {
             New Chat
           </Button>
         </Link>
+
         {/* Search Bar */}
         <TextField
           fullWidth
           size="small"
           placeholder="Search chat"
+          defaultValue={filter.searchVal}
+          onChange={(e) => searchDebounce({ key: 'searchVal', value: e.target.value })}
           slotProps={{
             input: {
               sx: { height: 40, borderRadius: '6px' },
@@ -102,12 +130,12 @@ export default function SidebarContent() {
             <Typography variant="h3" color="text.secondary" fontWeight={500}>
               Recent Chats
             </Typography>
-            <List sx={{ flex: 1, overflow: 'auto' }}>
+            <List ref={chatsRef}>
               {chats.map((chat, index) => (
                 <>
-                  <ListItem key={chat._id || index} disablePadding sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <Link href={`/chat/${chat._id}`} passHref>
-                      <ListItemButton sx={{ borderRadius: 1, mb: 0.5, '&:hover': { bgcolor: 'action.hover' } }}>
+                  <ListItem key={chat._id || index} disablePadding sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Link href={`/chat/${chat._id}`} passHref style={{ flex: 1 }}>
+                      <ListItemButton sx={{ borderRadius: 1, '&:hover': { bgcolor: 'action.hover' } }}>
                         <ListItemText
                           primary={chat?.title?.length > 20 ? chat.title.slice(0, 20) + '...' : chat.title}
                           sx={{
@@ -126,14 +154,7 @@ export default function SidebarContent() {
                     </IconButton>
                   </ListItem>
                   {/* Mobile Actions */}
-                  <Menu
-                    open={!!anchorEl}
-                    anchorEl={anchorEl}
-                    onClose={handleClose}
-                    sx={{
-                      boxShadow: '0px 4px 6px rgba(211, 106, 106, 0.1)',
-                    }}
-                  >
+                  <Menu open={!!anchorEl} anchorEl={anchorEl} onClose={handleClose}>
                     {ACTIONS.map((item, index) => (
                       <MenuItem
                         key={index}
@@ -185,7 +206,7 @@ export default function SidebarContent() {
             <Typography variant="body2">Access more features with new plans</Typography>
           </Stack>
         </Stack>
-        {/* Delete Chat */} {deleteItemId}
+        {/* Delete Chat */}
         {openDeleteConfirmation && (
           <ConfirmationPopup
             key="deletePopup"
@@ -193,11 +214,11 @@ export default function SidebarContent() {
             subheading={`Are you sure to delete this chat?`}
             acceptButtonText="Delete"
             loading={isDeleteLoading}
-            onCancel={() => setDeleteItemId(null)}
+            onCancel={handleCloseDelete}
             onAccept={() =>
               deleteSession(deleteItemId as number)
                 .unwrap()
-                .then(() => setDeleteItemId(null))
+                .then(handleCloseDelete)
             }
           />
         )}

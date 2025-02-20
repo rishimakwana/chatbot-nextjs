@@ -99,6 +99,13 @@ export const overridesComponent = (theme: Theme) => {
         autoHighlight: true,
       },
     },
+    MuiMenu: {
+      styleOverrides: {
+        paper: theme.unstable_sx({
+          boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+        }),
+      },
+    },
     MuiDialog: {
       styleOverrides: {
         paper: theme.unstable_sx({

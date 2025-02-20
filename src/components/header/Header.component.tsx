@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import { CiCirclePlus } from 'react-icons/ci'
 import { AiOutlineUpload } from 'react-icons/ai'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { GoSidebarCollapse, GoUpload } from 'react-icons/go'
 import { Box, Button, IconButton, Stack, Typography, useMediaQuery } from '@mui/material'
 import Image from 'next/image'
 import pdfImage from '@/../public/images/pages/pdf.png'
@@ -12,15 +13,13 @@ import { useState } from 'react'
 import { style } from './Header.style'
 import { useReduxDispatch } from '@/hooks'
 import { schema, TSchema } from './Header.config'
-import { useUploadPdfMutation } from '@/redux/api/common.api'
-import { useGetAllDocumentsQuery } from '@/redux/api/documents.api'
-import { MdOutlineMenu } from 'react-icons/md'
+import { useGetAllDocumentsQuery, useUploadPdfMutation } from '@/redux/api/documents.api'
 import Logo from '../logo/Logo.component'
 import { setSidebarDrawer } from '@/redux/slice/layout.slice'
 
 export default function Header() {
   const [uploadPdf, { isLoading }] = useUploadPdfMutation()
-  const [skip, setSkip] = useState(1)
+  const [page, setPage] = useState(1)
   const limit = 5
 
   const dispatch = useReduxDispatch()
@@ -33,7 +32,7 @@ export default function Header() {
     },
   })
 
-  const { data, isLoading: docsLoading, isError, isSuccess } = useGetAllDocumentsQuery({ skip, limit })
+  const { data } = useGetAllDocumentsQuery({ page, limit })
   const handleFileChangeAndSubmit = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (file) {
@@ -54,7 +53,7 @@ export default function Header() {
       {isLgDown && (
         <Stack direction="row">
           <IconButton size="large" edge="start" onClick={() => dispatch(setSidebarDrawer(true))}>
-            <MdOutlineMenu className="icon-xxl" />
+            <GoSidebarCollapse className="icon-xxl" />
           </IconButton>
         </Stack>
       )}
@@ -96,9 +95,14 @@ export default function Header() {
           <Link href="/documents">
             <Image src={seeAllDoc} alt="pdf" width={40} height={40} style={{ cursor: 'pointer' }} />
           </Link>
-        ) : (
+        ) : !isLgDown ? (
           <Button component="label" variant="orange" disabled={isLoading} startIcon={<AiOutlineUpload />}>
             Upload files
+            <VisuallyHiddenInput onChange={handleFileChangeAndSubmit} />
+          </Button>
+        ) : (
+          <Button component="label" variant="outlined" disabled={isLoading}>
+            <GoUpload />
             <VisuallyHiddenInput onChange={handleFileChangeAndSubmit} />
           </Button>
         )}

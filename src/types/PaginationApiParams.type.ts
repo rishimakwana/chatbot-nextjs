@@ -1,5 +1,5 @@
 export type TPaginationApiParams = {
-  skip: number
+  page: number
   limit: number
   sortOrder?: 'desc' | 'asc'
   searchByStatus?: string | string[]

@@ -18,9 +18,13 @@ export default function RootLayout(props: RootLayoutProps & { children: React.Re
   const { isLoading, isError, isPermission } = useAuth(props)
   const { isAuthPage, isDashboard } = usePage()
   const { fullPageLoader } = useReduxSelector((state) => state.layout)
+  // const sidebarDrawerDesktop = useReduxSelector((state) => state.layout.sidebarDrawerDesktop)
+
   const style = makeStyle({ isDashboard })
 
   if (isAuthPage) header = false
+  // if (!sidebarDrawerDesktop) sidebar = false
+  
 
   const renderChildren = () => {
     if (!isPermission) return <FullPageMessage heading="404: Page Not Found" hideButton />

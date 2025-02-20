@@ -12,7 +12,7 @@ export default function MobileSidebar() {
 
   return (
     <SwipeableDrawer open={sidebarDrawer} onClose={() => dispatch(setSidebarDrawer(false))} onOpen={() => '👻 ignore me'} disableSwipeToOpen keepMounted>
-      <Stack component="aside" spacing={3} sx={style.root}>
+      <Stack component="aside" sx={style.root}>
         {/* Profile */}
         <Profile />
 

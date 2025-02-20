@@ -78,7 +78,7 @@ export default function ChatContent() {
                       )}
                       {message.type === 'question' && <Avatar sx={{ width: 40, height: 40, bgcolor: message.type === 'question' ? 'primary.light' : 'grey.300' }} />}
                       <Stack flexDirection={'column'} alignItems={'flex-end'}>
-                        <Box sx={{ background: message.type === 'question' ? 'primary.light' : '#EBECF0', p: 2, borderRadius: 2, border: message.type === 'question' ? '1px solid #E0E0E0' : '1px solid #EBECF0' }}>
+                        <Box sx={{ background: message.type === 'question' ? 'primary.light' : '#EBECF0', p: 1, borderRadius: 2, border: message.type === 'question' ? '1px solid #E0E0E0' : '1px solid #EBECF0' }}>
                           <Typography variant="body1" sx={{ wordBreak: 'break-word' }}>
                             {message.content}
                           </Typography>

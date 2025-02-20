@@ -6,6 +6,7 @@ export const layoutSlice = createSlice({
     isWebsiteLoading: true,
     fullPageLoader: false,
     sidebarDrawer: false,
+    sidebarDrawerDesktop: true,
   },
   reducers: {
     setWebsiteLoader: (state, action: PayloadAction<boolean>) => {
@@ -19,7 +20,10 @@ export const layoutSlice = createSlice({
     setSidebarDrawer: (state, action: PayloadAction<boolean>) => {
       state.sidebarDrawer = action.payload
     },
+    setSidebarDrawerDesktop: (state, action: PayloadAction<boolean>) => {
+      state.sidebarDrawerDesktop = action.payload
+    },
   },
 })
 
-export const { setWebsiteLoader, setFullPageLoader, setSidebarDrawer } = layoutSlice.actions
+export const { setWebsiteLoader, setFullPageLoader, setSidebarDrawer, setSidebarDrawerDesktop } = layoutSlice.actions
