@@ -36,7 +36,9 @@ export default function App(props: AppProps) {
               <ReactHotToast />
               <NProgress />
               <CssBaseline enableColorScheme />
-              <RootLayout {...rootLayoutProps}><Component {...pageProps} /></RootLayout>
+              <RootLayout {...rootLayoutProps}>
+                <Component {...pageProps} />
+              </RootLayout>
             </IconContext.Provider>
           </LocalizationProvider>
         </ThemeProvider>

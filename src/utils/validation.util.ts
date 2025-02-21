@@ -44,8 +44,6 @@ export const fileTest = ({ size, extensions = [], required = true }: { size?: nu
     if (required && !value) return ctx.createError({ message: `Required *` })
     if (!value) return true
 
-    console.log(value,"value++++++++++++");
-    
     // Extension
     if (extensions.length) {
       const fileName = value instanceof File ? value.name : new URL(value).pathname

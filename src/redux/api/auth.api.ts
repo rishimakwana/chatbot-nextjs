@@ -27,7 +27,7 @@ export const extendedApi = api.injectEndpoints({
             setUser({ token, redirection: false })
             dispatch(updateUser(user))
           })
-          .catch(() => { })
+          .catch(() => {})
       },
     }),
 
@@ -55,7 +55,7 @@ export const extendedApi = api.injectEndpoints({
           .then(({ data: { user } }) => {
             dispatch(updateUser(user))
           })
-          .catch(() => { })
+          .catch(() => {})
       },
     }),
 
@@ -63,24 +63,15 @@ export const extendedApi = api.injectEndpoints({
       query: () => '/auth/getProfile',
       // providesTags: ['profile'],
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-        await queryFulfilled.then(({ data }) => dispatch(updateUser(data))).catch(() => { })
+        await queryFulfilled.then(({ data }) => dispatch(updateUser(data))).catch(() => {})
       },
     }),
 
-    updateProfile: builder.mutation<void, Pick<UserDTO, 'fullName' | 'phone'> & Pick<UserDTO['profile'], 'street' | 'city' | 'zipCode' | 'state'>>({
-      query: (body) => ({ url: '/auth/updateProfile', method: 'PUT', body }),
-      // invalidatesTags: (result, error) => (!error ? ['profile'] : []),
-    }),
+    // updateProfile: builder.mutation<void, Pick<UserDTO, 'fullName' | 'phone'> & Pick<UserDTO['profile'], 'street' | 'city' | 'zipCode' | 'state'>>({
+    //   query: (body) => ({ url: '/auth/updateProfile', method: 'PUT', body }),
+    //   // invalidatesTags: (result, error) => (!error ? ['profile'] : []),
+    // }),
   }),
 })
 
-export const {
-  useLoginMutation,
-  useLawyerRegisterMutation,
-  useUpdateLawyerMutation,
-  useLazyGetUserQuery,
-  useForgotPasswordMutation,
-  useResetPasswordMutation,
-  useUpdatePasswordMutation,
-  useUpdateProfileMutation,
-} = extendedApi
+export const { useLoginMutation, useLawyerRegisterMutation, useUpdateLawyerMutation, useLazyGetUserQuery, useForgotPasswordMutation, useResetPasswordMutation, useUpdatePasswordMutation } = extendedApi

@@ -88,9 +88,9 @@ export default function ChatContent() {
                             <IconButton onClick={() => handleCopy(message.content)}>
                               <FiCopy fontSize="small" />
                             </IconButton>
-                            <IconButton onClick={() => handleCopy(message.content)}>
+                            {/* <IconButton onClick={() => handleCopy(message.content)}>
                               <FiRefreshCcw fontSize="small" />
-                            </IconButton>
+                            </IconButton> */}
                           </Stack>
                         )}
                       </Stack>

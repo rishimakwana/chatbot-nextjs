@@ -8,7 +8,7 @@ export const style: TStyle = {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   docCard: {
     border: '1px solid #CFD0D7',
@@ -23,10 +23,10 @@ export const style: TStyle = {
     padding: 1,
   },
   docCardText: {
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    width: "50px",
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    width: '50px',
     fontSize: '13px',
   },
 }

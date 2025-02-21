@@ -11,6 +11,6 @@ export const style: TStyle = {
     maxWidth: '264px',
     pb: 2,
     py: 2,
-    px: 2
+    px: 2,
   },
 }

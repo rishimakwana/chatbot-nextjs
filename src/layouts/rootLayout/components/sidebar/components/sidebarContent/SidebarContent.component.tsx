@@ -5,13 +5,14 @@ import { GoPencil } from 'react-icons/go'
 import { IoSearch } from 'react-icons/io5'
 import { MdDeleteForever } from 'react-icons/md'
 import { BsPlusLg, BsThreeDots } from 'react-icons/bs'
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Stack, Typography, InputAdornment, TextField, List, ListItem, ListItemText, ListItemButton, Button, IconButton, Menu, MenuItem, ListItemIcon, Fab, debounce } from '@mui/material'
+import { useInView } from 'react-intersection-observer'
 
-import { style } from './SidebarContent.style'
 import { useUrlParams } from '@/hooks'
-import { useDeleteSessionMutation, useGetAllSessionsQuery, useLazyGetAllSessionsQuery } from '@/redux/api/chat.api'
+import { style } from './SidebarContent.style'
 import { TAction, TFilter } from './SidebarContent.type'
+import { useDeleteSessionMutation, useLazyGetAllSessionsQuery } from '@/redux/api/chat.api'
 import ConfirmationPopup from '@/components/confirmationPopup/ConfirmationPopup.component'
 
 export default function SidebarContent() {
@@ -19,16 +20,13 @@ export default function SidebarContent() {
   const router = useRouter()
   const [page, setPage] = useState(1)
   const [chats, setChats] = useState<any[]>([])
-  const [isLoadingMore, setIsLoadingMore] = useState(false)
+  const [hasMore, setHasMore] = useState(true)
   const [deleteItemId, setDeleteItemId] = useState<number | null>(null)
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false)
   const [limit, setLimit] = useState(10)
   const [searchVal, setSearchVal] = useState((router.query.searchVal as string) || '')
-
   const [deleteSession, { isLoading: isDeleteLoading }] = useDeleteSessionMutation()
-  const chatsRef = useRef<HTMLUListElement | null>(null)
-  const observerRef = useRef<IntersectionObserver | null>(null)
 
   const filter: TFilter = {
     searchVal,
@@ -40,44 +38,10 @@ export default function SidebarContent() {
 
   const [trigger, { data, isLoading, isSuccess, isFetching }] = useLazyGetAllSessionsQuery()
 
-  useEffect(() => {
-    trigger(filter)
-      .unwrap()
-      .then((res) => {
-        setChats((prevChats) => (page === 1 ? res.list : [...prevChats, ...res.list]))
-        setIsLoadingMore(res.list.length === limit)
-      })
-  }, [page, searchVal])
-
-  const loadMoreSessions = () => {
-    if (isLoadingMore) return
-    setIsLoadingMore(true)
-    setPage((prev) => prev + 1)
-  }
-  useEffect(() => {
-    if (!chatsRef.current) return
-    if (observerRef.current) {
-      observerRef.current.disconnect()
-    }
-
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          loadMoreSessions()
-        }
-      },
-      { threshold: 1.0 },
-    )
-    const lastItem = chatsRef.current.lastElementChild
-    if (lastItem) observerRef.current.observe(lastItem)
-    return () => observerRef.current?.disconnect()
-  }, [chats, isFetching])
-
   const handleClose = () => setTimeout(() => setAnchorEl(null), 200)
 
   const handleActionClick = (status: string, id: number) => {
     if (status === 'delete') {
-      setDeleteItemId(id)
       setOpenDeleteConfirmation(true)
     } else if (status === 'rename') {
       // Open rename editor
@@ -85,8 +49,9 @@ export default function SidebarContent() {
   }
 
   const handleCloseDelete = () => {
-    setOpenDeleteConfirmation(false)
     setDeleteItemId(null)
+    setOpenDeleteConfirmation(false)
+    setChats((prevChats) => prevChats.filter((chat) => chat._id !== deleteItemId))
   }
 
   const ACTIONS: TAction[] = [
@@ -94,6 +59,44 @@ export default function SidebarContent() {
     { label: 'Delete', Icon: MdDeleteForever, color: 'error', onClick: (id: number) => handleActionClick('delete', id) },
   ]
 
+  const [scrollTrigger, isInView] = useInView()
+
+  const loadMoreSessions = useCallback(() => {
+    if (!hasMore || isLoading) return
+
+    trigger(filter).then((res) => {
+      if (res?.data?.list?.length == 0) {
+        setHasMore(false)
+      }
+      if (res?.data?.list?.length) {
+        // setChats((prevChats) => [...prevChats, ...(res?.data?.list ?? [])])
+        setChats((prevChats) => {
+          const existingIds = new Set(prevChats.map((chat) => chat._id))
+          const uniqueChats = res?.data?.list?.filter((chat) => !existingIds.has(chat._id))
+          return [...prevChats, ...(uniqueChats || [])]
+        })
+        setPage((prevPage) => prevPage + 1)
+      } else {
+        setHasMore(false)
+      }
+    })
+  }, [hasMore, isLoading, trigger])
+
+  // Fetch initial data
+  useEffect(() => {
+    trigger(filter)
+      .unwrap()
+      .then((res) => {
+        setChats((prevChats) => (page === 1 ? res.list : [...prevChats, ...res.list]))
+      })
+  }, [page, searchVal])
+
+  // Load more data when the last item is in view
+  useEffect(() => {
+    if (isInView && hasMore) {
+      loadMoreSessions()
+    }
+  }, [isInView, hasMore])
   return (
     <>
       <Stack component="nav" sx={style.root}>
@@ -104,14 +107,18 @@ export default function SidebarContent() {
             New Chat
           </Button>
         </Link>
-
         {/* Search Bar */}
         <TextField
           fullWidth
           size="small"
           placeholder="Search chat"
           defaultValue={filter.searchVal}
-          onChange={(e) => searchDebounce({ key: 'searchVal', value: e.target.value })}
+          onChange={(e) => {
+            setSearchVal(e.target.value);
+            setPage(1)
+            setChats([])
+            searchDebounce({ key: 'searchVal', value: e.target.value })
+          }}
           slotProps={{
             input: {
               sx: { height: 40, borderRadius: '6px' },
@@ -130,10 +137,10 @@ export default function SidebarContent() {
             <Typography variant="h3" color="text.secondary" fontWeight={500}>
               Recent Chats
             </Typography>
-            <List ref={chatsRef}>
+            <List>
               {chats.map((chat, index) => (
                 <>
-                  <ListItem key={chat._id || index} disablePadding sx={{ display: 'flex', alignItems: 'center' }}>
+                  <ListItem ref={scrollTrigger} key={chat._id || index} disablePadding sx={{ display: 'flex', alignItems: 'center' }}>
                     <Link href={`/chat/${chat._id}`} passHref style={{ flex: 1 }}>
                       <ListItemButton sx={{ borderRadius: 1, '&:hover': { bgcolor: 'action.hover' } }}>
                         <ListItemText
@@ -149,7 +156,13 @@ export default function SidebarContent() {
                       </ListItemButton>
                     </Link>
                     {/* Menu Icon */}
-                    <IconButton onClick={(e) => setAnchorEl(e.currentTarget)} size="small">
+                    <IconButton
+                      onClick={(e) => {
+                        setAnchorEl(e.currentTarget)
+                        setDeleteItemId(chat._id)
+                      }}
+                      size="small"
+                    >
                       <BsThreeDots />
                     </IconButton>
                   </ListItem>
@@ -160,7 +173,7 @@ export default function SidebarContent() {
                         key={index}
                         disabled={item.disable}
                         onClick={() => {
-                          handleClose(), item.onClick(chat._id)
+                          handleClose(), item.onClick(deleteItemId as number)
                         }}
                       >
                         <ListItemIcon>
@@ -174,15 +187,15 @@ export default function SidebarContent() {
                   </Menu>
                 </>
               ))}
-              {/* <ListItem
-                ref={(node) => {
-                  observerRef.current = node
-                }}
-                sx={{ display: 'flex', justifyContent: 'center', py: 1 }}
-              >
-                {isLoading && <CircularProgress size={20} />}
-
-              </ListItem> */}
+              {!hasMore && !isFetching && (
+                <ListItem>
+                  <ListItemText>
+                    <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', width: '100%' }}>
+                      No more chats
+                    </Typography>
+                  </ListItemText>
+                </ListItem>
+              )}
             </List>
           </Stack>
         ) : (

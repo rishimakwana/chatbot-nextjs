@@ -6,9 +6,9 @@ export const style: TStyle = {
     height: 'calc(100vh - 100px)',
     width: '100%',
   },
-  welcome_text:{
+  welcome_text: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-  }
+  },
 }

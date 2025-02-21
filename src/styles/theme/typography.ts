@@ -4,13 +4,13 @@ import { Righteous, Livvic } from 'next/font/google'
 const livvic = Livvic({
   display: 'swap',
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700']
+  weight: ['400', '500', '600', '700'],
 })
 
 const righteous = Righteous({
   display: 'swap',
   subsets: ['latin'],
-  weight: ['400']
+  weight: ['400'],
 })
 
 export const createTypography = () => {

@@ -24,7 +24,6 @@ export default function RootLayout(props: RootLayoutProps & { children: React.Re
 
   if (isAuthPage) header = false
   // if (!sidebarDrawerDesktop) sidebar = false
-  
 
   const renderChildren = () => {
     if (!isPermission) return <FullPageMessage heading="404: Page Not Found" hideButton />

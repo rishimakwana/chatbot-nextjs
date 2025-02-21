@@ -7,7 +7,7 @@ import { useLazyGetUserQuery } from '@/redux/api/auth.api'
 import { setWebsiteLoader } from '@/redux/slice/layout.slice'
 import { RootLayoutProps } from '@/layouts/rootLayout/RootLayout.type'
 
-export const useAuth = ({ pageType, roles }: RootLayoutProps) => {
+export const useAuth = ({ pageType }: RootLayoutProps) => {
   const router = useRouter()
   const token = getCookie('token')
   const dispatch = useReduxDispatch()
@@ -17,7 +17,7 @@ export const useAuth = ({ pageType, roles }: RootLayoutProps) => {
   const [error, setError] = useState(false)
 
   const [getUser] = useLazyGetUserQuery()
-  const { isLoggedIn, role, userData } = useReduxSelector((state) => state.user)
+  const { isLoggedIn, userData } = useReduxSelector((state) => state.user)
 
   useEffect(() => {
     dispatch(setWebsiteLoader(loading))
@@ -45,7 +45,6 @@ export const useAuth = ({ pageType, roles }: RootLayoutProps) => {
       else if (token && pageType === 'auth' && isLoggedIn && (await validate())) await router.replace('/dashboard/home')
       else if (pageType === 'protected' && isLoggedIn && (await validate())) {
         let isPermission: boolean = true
-        if (roles && isPermission) isPermission = roles.includes(role)
         setPermission(isPermission)
         setLoading(false)
       }
@@ -53,28 +52,8 @@ export const useAuth = ({ pageType, roles }: RootLayoutProps) => {
   }, [router.pathname, isLoggedIn])
 
   const validate = async () => {
-    if (role === 'lawyer' && userData.status === 'pending') {
+    if (userData.status === 'pending') {
       if (pageType !== 'auth') await router.push('/auth/lawyer/register')
-      setLoading(false)
-      return false
-    }
-
-    if (role === 'client' && !userData.profile.isProfileSetup && router.pathname !== '/client/onboard') {
-      await router.push('/client/onboard')
-      setLoading(false)
-      return false
-    } else if (role === 'client' && userData.profile.isProfileSetup && router.pathname === '/client/onboard') {
-      await router.push('/dashboard/home')
-      setLoading(false)
-      return false
-    }
-
-    if (role === 'client' && userData.status === 'verified' && router.pathname !== '/subscription') {
-      await router.push('/subscription')
-      setLoading(false)
-      return false
-    } else if (role === 'client' && userData.status !== 'verified' && router.pathname === '/subscription') {
-      await router.push('/dashboard/home')
       setLoading(false)
       return false
     }

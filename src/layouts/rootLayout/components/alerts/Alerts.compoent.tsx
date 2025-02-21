@@ -7,12 +7,12 @@ import { useReduxSelector } from '@/hooks'
 
 export default function Alerts() {
   const router = useRouter()
-  const { userData, role } = useReduxSelector((state) => state.user)
+  const { userData } = useReduxSelector((state) => state.user)
 
   return (
     <Container sx={style.root}>
       {/* Payment Failed Alert */}
-      {role === 'client' && userData.subscriptionStatus === 'failed' && router.pathname !== '/dashboard/billing' && (
+      {userData.subscriptionStatus === 'failed' && router.pathname !== '/dashboard/billing' && (
         <Alert
           severity="error"
           variant="outlined"

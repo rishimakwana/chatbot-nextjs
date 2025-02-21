@@ -1,21 +1,20 @@
-import { TPaginationApiParams, TPaginationApiResponse } from '@/types';
+import { TPaginationApiParams, TPaginationApiResponse } from '@/types'
 import { api } from './api.config'
-import { DocumentDTO } from '@/dto/Document.dto';
+import { DocumentDTO } from '@/dto/Document.dto'
 
 export const documentsApi = api.injectEndpoints({
   endpoints: (builder) => ({
-
     uploadPdf: builder.mutation({
       query: (file) => {
-        const formData = new FormData();
-        formData.append("file", file);
+        const formData = new FormData()
+        formData.append('file', file)
         return {
-          url: "/api/upload-pdf",
-          method: "POST",
+          url: '/api/upload-pdf',
+          method: 'POST',
           body: formData,
-        };
+        }
       },
-      invalidatesTags: [{ type: "Documents", id: "LIST" }],
+      invalidatesTags: [{ type: 'Documents', id: 'LIST' }],
     }),
 
     getAllDocuments: builder.query<TPaginationApiResponse<DocumentDTO>, TPaginationApiParams>({
@@ -25,9 +24,9 @@ export const documentsApi = api.injectEndpoints({
 
     deleteDocument: builder.mutation<void, number>({
       query: (id) => ({ url: `/api/delete-file?document_id=${id}`, method: 'DELETE' }),
-      invalidatesTags: [{ type: "Documents", id: "LIST" }],
+      invalidatesTags: [{ type: 'Documents', id: 'LIST' }],
     }),
   }),
 })
 
-export const { useGetAllDocumentsQuery, useDeleteDocumentMutation, useUploadPdfMutation } = documentsApi; 
+export const { useGetAllDocumentsQuery, useDeleteDocumentMutation, useUploadPdfMutation } = documentsApi

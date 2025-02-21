@@ -13,7 +13,7 @@ const handleRejectedAction = (action: any) => {
   const { payload, meta } = action
   console.error(`😲 OMG Api Failed - Details: `, action)
   const status = meta.baseQueryMeta.response?.status
-  const errorMessage = getErrorMessage(status, payload.data?.message)
+  const errorMessage = getErrorMessage(status, payload.data?.detail)
   const hideToast = meta.baseQueryMeta.request.headers.get('hideErrorToast') === 'true'
   if (!hideToast) toast.error(errorMessage)
 }

@@ -1,4 +1,3 @@
-
 import { useRouter } from 'next/router'
 
 import ChatContent from './components/chatContent/ChatContent.component'

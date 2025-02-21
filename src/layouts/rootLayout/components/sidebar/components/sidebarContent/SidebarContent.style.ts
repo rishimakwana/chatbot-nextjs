@@ -25,7 +25,7 @@ export const style: TStyle = {
     p: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    justifySelf: 'center'
+    justifySelf: 'center',
   },
   mobileActionIcon: {
     width: 30,

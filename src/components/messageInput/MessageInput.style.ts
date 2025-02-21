@@ -1,10 +1,9 @@
 import { TStyle } from '@/types'
 
 export const style: TStyle = {
-
   actionButtons: {
     display: 'flex',
-    flexDirection: "row",
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 2,

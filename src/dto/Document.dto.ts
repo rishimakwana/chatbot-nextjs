@@ -1,7 +1,6 @@
-import { TApiBase } from "@/types"
-
+import { TApiBase } from '@/types'
 
 export type DocumentDTO = TApiBase & {
-  file_name: string,
+  file_name: string
   created_at: string
 }

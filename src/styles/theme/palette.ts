@@ -46,18 +46,18 @@ export const createPalette = () => {
 ======================== */
 declare module '@mui/material/styles' {
   interface Palette {
-    blue: Palette['primary'],
-    orange: Palette['primary'];
+    blue: Palette['primary']
+    orange: Palette['primary']
   }
   interface PaletteOptions {
-    blue?: PaletteOptions['primary'],
-    orange?: PaletteOptions['primary'];
+    blue?: PaletteOptions['primary']
+    orange?: PaletteOptions['primary']
   }
 }
 
 declare module '@mui/material/Button' {
   interface ButtonPropsColorOverrides {
-    blue: true,
+    blue: true
     orange: true
   }
 }
