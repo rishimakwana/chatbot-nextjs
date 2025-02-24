@@ -51,6 +51,10 @@ export default function SidebarContent() {
   const handleCloseDelete = () => {
     setDeleteItemId(null)
     setOpenDeleteConfirmation(false)
+  }
+  const handleSuccess = () => {
+    setDeleteItemId(null)
+    setOpenDeleteConfirmation(false)
     setChats((prevChats) => prevChats.filter((chat) => chat._id !== deleteItemId))
   }
 
@@ -114,7 +118,7 @@ export default function SidebarContent() {
           placeholder="Search chat"
           defaultValue={filter.searchVal}
           onChange={(e) => {
-            setSearchVal(e.target.value);
+            setSearchVal(e.target.value)
             setPage(1)
             setChats([])
             searchDebounce({ key: 'searchVal', value: e.target.value })
@@ -231,7 +235,7 @@ export default function SidebarContent() {
             onAccept={() =>
               deleteSession(deleteItemId as number)
                 .unwrap()
-                .then(handleCloseDelete)
+                .then(handleSuccess)
             }
           />
         )}

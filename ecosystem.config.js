@@ -9,7 +9,7 @@ module.exports = {
       watch: false,
       autorestart: false,
       env: {
-        PORT: 6001,
+        PORT: 7018,
         name: 'docbot',
       },
     },

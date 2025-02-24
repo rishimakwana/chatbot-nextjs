@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { IconButton, Stack, SwipeableDrawer } from '@mui/material'
+import { IconButton, Stack } from '@mui/material'
 import { GoSidebarCollapse } from 'react-icons/go'
 
 import Logo from '@/components/logo/Logo.component'
