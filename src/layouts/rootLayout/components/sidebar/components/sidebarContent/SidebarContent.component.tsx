@@ -150,7 +150,7 @@ export default function SidebarContent() {
                     ref={scrollTrigger}
                     key={chat._id || index}
                     disablePadding
-                    sx={{ display: 'flex', alignItems: 'center', bgcolor: selectedChatId === chat._id ? 'action.selected' : 'transparent',borderRadius: 2 }}
+                    sx={{ display: 'flex', alignItems: 'center', bgcolor: selectedChatId === chat._id ? 'action.selected' : 'transparent', borderRadius: 2 }}
                     onClick={() => setSelectedChatId(chat._id)}
                   >
                     <Link href={`/chat/${chat._id}`} passHref style={{ flex: 1 }}>

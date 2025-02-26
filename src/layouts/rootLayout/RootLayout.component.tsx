@@ -36,7 +36,7 @@ export default function RootLayout(props: RootLayoutProps & { children: React.Re
       ) : (
         <>
           <Stack direction="row">
-            {sidebar !== false && !isError &&  <Sidebar />}
+            {sidebar !== false && !isError && <Sidebar />}
             <Stack sx={style.body}>
               <Stack sx={style.main}>
                 <ErrorBoundary error={isError}>

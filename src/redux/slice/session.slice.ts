@@ -1,7 +1,6 @@
 import { TGetSessionListResponse } from '@/types/session'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-
 export const sessionSlice = createSlice({
   name: 'session',
   initialState: {

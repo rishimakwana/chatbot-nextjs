@@ -12,12 +12,12 @@ export const chatApi = api.injectEndpoints({
       providesTags: (result, error) =>
         !error && result?.list
           ? [
-            ...result.list.map(({ _id }: { _id: number }) => ({
-              type: 'Sessions' as const,
-              id: _id,
-            })),
-            { type: 'Sessions' as const, id: 'LIST' },
-          ]
+              ...result.list.map(({ _id }: { _id: number }) => ({
+                type: 'Sessions' as const,
+                id: _id,
+              })),
+              { type: 'Sessions' as const, id: 'LIST' },
+            ]
           : [{ type: 'Sessions' as const, id: 'LIST' }],
     }),
 
