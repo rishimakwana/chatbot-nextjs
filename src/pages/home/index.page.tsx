@@ -2,16 +2,18 @@ import { useState } from 'react'
 import { useRouter } from 'next/router'
 
 import MessageInput from '@/components/messageInput/MessageInput.component'
-import { useReduxDispatch } from '@/hooks'
+import { useReduxDispatch, useReduxSelector } from '@/hooks'
 import { useAddSessionMutation } from '@/redux/api/chat.api'
 import { addMessage } from '@/redux/slice/chat.slice'
 import { TPage } from '@/types'
 import Header from '@/components/header/Header.component'
 import { Stack, Typography } from '@mui/material'
+import { addSessions } from '@/redux/slice/session.slice'
 
 const Home: TPage = () => {
   const router = useRouter()
   const dispatch = useReduxDispatch()
+  const sessions = useReduxSelector((state) => state.session.sessions)
 
   const [isLoading, setIsLoading] = useState(false)
   const [addSession] = useAddSessionMutation()
@@ -19,9 +21,13 @@ const Home: TPage = () => {
   const handleMessage = async (message: string) => {
     try {
       setIsLoading(true)
-      const { sessionId } = await addSession().unwrap()
-      dispatch(addMessage({ sessionId, messages: [{ type: 'question', content: message, isNewChat: true }] }))
-      router.push(`/chat/${sessionId}`)
+      const session = await addSession().unwrap()
+      if (session) {
+        dispatch(addMessage({ sessionId: session._id.toString(), messages: [{ type: 'question', content: message, isNewChat: true }] }))
+        router.push(`/chat/${session._id}`)
+
+        dispatch(addSessions([session, ...sessions]))
+      }
     } finally {
       setIsLoading(false)
     }

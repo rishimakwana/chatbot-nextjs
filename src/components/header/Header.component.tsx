@@ -11,14 +11,16 @@ import seeAllDoc from '@/../public/images/pages/seealldocs.svg'
 import VisuallyHiddenInput from '../hiddenInput/HiddenInput.component'
 import { useState } from 'react'
 import { style } from './Header.style'
-import { useReduxDispatch } from '@/hooks'
+import { useReduxDispatch, useReduxSelector } from '@/hooks'
 import { schema, TSchema } from './Header.config'
 import { useGetAllDocumentsQuery, useUploadPdfMutation } from '@/redux/api/documents.api'
 import Logo from '../logo/Logo.component'
-import { setSidebarDrawer } from '@/redux/slice/layout.slice'
+import { setSidebarDrawer, setSidebarDrawerDesktop } from '@/redux/slice/layout.slice'
 
 export default function Header() {
   const [uploadPdf, { isLoading }] = useUploadPdfMutation()
+  const sidebarDrawerDesktop = useReduxSelector((state) => state.layout.sidebarDrawerDesktop)
+
   const [page, setPage] = useState(1)
   const limit = 5
 
@@ -50,6 +52,15 @@ export default function Header() {
   return (
     <Stack component="section" sx={style.root}>
       {/* Menu */}
+
+      {!isLgDown && !sidebarDrawerDesktop && (
+        <Stack direction="row">
+          <IconButton size="large" edge="start" onClick={() => dispatch(setSidebarDrawerDesktop(true))}>
+            <GoSidebarCollapse className="icon-xxl" />
+          </IconButton>
+        </Stack>
+      )}
+
       {isLgDown && (
         <Stack direction="row">
           <IconButton size="large" edge="start" onClick={() => dispatch(setSidebarDrawer(true))}>

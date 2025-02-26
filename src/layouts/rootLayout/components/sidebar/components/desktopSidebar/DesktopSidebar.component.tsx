@@ -6,12 +6,12 @@ import Logo from '@/components/logo/Logo.component'
 import SidebarContent from '../sidebarContent/SidebarContent.component'
 import { style } from './DesktopSidebar.style'
 import { useReduxDispatch, useReduxSelector } from '@/hooks'
-import { setSidebarDrawer } from '@/redux/slice/layout.slice'
+import { setSidebarDrawerDesktop } from '@/redux/slice/layout.slice'
 
 export default function DesktopSidebar() {
   const sidebarRef = useRef<HTMLElement | null>(null)
   const dispatch = useReduxDispatch()
-  const sidebarDrawer = useReduxSelector((state) => state.layout.sidebarDrawer)
+  const sidebarDrawerDesktop = useReduxSelector((state) => state.layout.sidebarDrawerDesktop)
 
   useEffect(() => {
     const sidebarElement = sidebarRef.current!
@@ -35,7 +35,7 @@ export default function DesktopSidebar() {
       {/* Logo */}
       <Stack direction="row" alignItems="center" justifyContent="space-between">
         <Logo />
-        <IconButton onClick={() => dispatch(setSidebarDrawer(!sidebarDrawer))}>
+        <IconButton onClick={() => dispatch(setSidebarDrawerDesktop(!sidebarDrawerDesktop))}>
           <GoSidebarCollapse className="icon-xxl" />
         </IconButton>
       </Stack>

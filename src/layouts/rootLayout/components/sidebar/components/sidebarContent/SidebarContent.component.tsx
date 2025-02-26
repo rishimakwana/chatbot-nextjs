@@ -9,24 +9,30 @@ import { useState, useEffect, useCallback } from 'react'
 import { Stack, Typography, InputAdornment, TextField, List, ListItem, ListItemText, ListItemButton, Button, IconButton, Menu, MenuItem, ListItemIcon, Fab, debounce } from '@mui/material'
 import { useInView } from 'react-intersection-observer'
 
-import { useUrlParams } from '@/hooks'
+import { useReduxSelector, useUrlParams } from '@/hooks'
 import { style } from './SidebarContent.style'
 import { TAction, TFilter } from './SidebarContent.type'
 import { useDeleteSessionMutation, useLazyGetAllSessionsQuery } from '@/redux/api/chat.api'
 import ConfirmationPopup from '@/components/confirmationPopup/ConfirmationPopup.component'
+import { useDispatch, useSelector } from 'react-redux'
+import { addSessions } from '@/redux/slice/session.slice'
+import { TGetSessionListResponse } from '@/types/session'
 
 export default function SidebarContent() {
   const { setUrlParams } = useUrlParams()
   const router = useRouter()
+  const dispatch = useDispatch()
   const [page, setPage] = useState(1)
-  const [chats, setChats] = useState<any[]>([])
   const [hasMore, setHasMore] = useState(true)
+  const [selectedChatId, setSelectedChatId] = useState<number | null>(null)
   const [deleteItemId, setDeleteItemId] = useState<number | null>(null)
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false)
   const [limit, setLimit] = useState(10)
   const [searchVal, setSearchVal] = useState((router.query.searchVal as string) || '')
   const [deleteSession, { isLoading: isDeleteLoading }] = useDeleteSessionMutation()
+
+  const sessions = useReduxSelector((state) => state.session.sessions)
 
   const filter: TFilter = {
     searchVal,
@@ -52,11 +58,6 @@ export default function SidebarContent() {
     setDeleteItemId(null)
     setOpenDeleteConfirmation(false)
   }
-  const handleSuccess = () => {
-    setDeleteItemId(null)
-    setOpenDeleteConfirmation(false)
-    setChats((prevChats) => prevChats.filter((chat) => chat._id !== deleteItemId))
-  }
 
   const ACTIONS: TAction[] = [
     { label: 'Rename', Icon: GoPencil, color: 'primary', onClick: (id: number) => handleActionClick('rename', id) },
@@ -65,42 +66,43 @@ export default function SidebarContent() {
 
   const [scrollTrigger, isInView] = useInView()
 
-  const loadMoreSessions = useCallback(() => {
-    if (!hasMore || isLoading) return
+  const fetchSessions = async (pageNumber = 1, reset = false) => {
+    const filter = { searchVal, page: pageNumber, limit }
+    const response = await trigger(filter).unwrap()
+    if (response?.list) {
+      const existingIds = new Set(sessions.map((chat) => chat._id))
+      const uniqueChats = response.list.filter((chat) => !existingIds.has(chat._id))
+      const updatedSessions = reset ? response.list : [...sessions, ...uniqueChats]
 
-    trigger(filter).then((res) => {
-      if (res?.data?.list?.length == 0) {
-        setHasMore(false)
-      }
-      if (res?.data?.list?.length) {
-        // setChats((prevChats) => [...prevChats, ...(res?.data?.list ?? [])])
-        setChats((prevChats) => {
-          const existingIds = new Set(prevChats.map((chat) => chat._id))
-          const uniqueChats = res?.data?.list?.filter((chat) => !existingIds.has(chat._id))
-          return [...prevChats, ...(uniqueChats || [])]
-        })
-        setPage((prevPage) => prevPage + 1)
-      } else {
-        setHasMore(false)
-      }
-    })
-  }, [hasMore, isLoading, trigger])
+      dispatch(addSessions(updatedSessions as TGetSessionListResponse[]))
+      setHasMore(response.list.length > 0)
+      if (reset) setPage(1)
+    }
+  }
 
-  // Fetch initial data
   useEffect(() => {
-    trigger(filter)
-      .unwrap()
-      .then((res) => {
-        setChats((prevChats) => (page === 1 ? res.list : [...prevChats, ...res.list]))
-      })
-  }, [page, searchVal])
+    fetchSessions(1, true)
+  }, [searchVal])
 
-  // Load more data when the last item is in view
   useEffect(() => {
     if (isInView && hasMore) {
-      loadMoreSessions()
+      setPage((prevPage) => {
+        const nextPage = prevPage + 1
+        fetchSessions(nextPage)
+        return nextPage
+      })
     }
   }, [isInView, hasMore])
+
+  const handleDelete = async () => {
+    if (deleteItemId) {
+      await deleteSession(deleteItemId)
+      dispatch(addSessions(sessions.filter((session) => session._id != deleteItemId)))
+      setDeleteItemId(null)
+      setOpenDeleteConfirmation(false)
+    }
+  }
+
   return (
     <>
       <Stack component="nav" sx={style.root}>
@@ -120,7 +122,7 @@ export default function SidebarContent() {
           onChange={(e) => {
             setSearchVal(e.target.value)
             setPage(1)
-            setChats([])
+            // setChats([])
             searchDebounce({ key: 'searchVal', value: e.target.value })
           }}
           slotProps={{
@@ -135,16 +137,22 @@ export default function SidebarContent() {
           }}
         />
         {/* Recent Chats List */}
-        {isSuccess && !isLoading && chats.length > 0 ? (
+        {isSuccess && !isLoading && sessions.length > 0 ? (
           <Stack flex={1} overflow="auto">
             {/* Recent Chats */}
             <Typography variant="h3" color="text.secondary" fontWeight={500}>
               Recent Chats
             </Typography>
             <List>
-              {chats.map((chat, index) => (
+              {sessions.map((chat, index) => (
                 <>
-                  <ListItem ref={scrollTrigger} key={chat._id || index} disablePadding sx={{ display: 'flex', alignItems: 'center' }}>
+                  <ListItem
+                    ref={scrollTrigger}
+                    key={chat._id || index}
+                    disablePadding
+                    sx={{ display: 'flex', alignItems: 'center', bgcolor: selectedChatId === chat._id ? 'action.selected' : 'transparent',borderRadius: 2 }}
+                    onClick={() => setSelectedChatId(chat._id)}
+                  >
                     <Link href={`/chat/${chat._id}`} passHref style={{ flex: 1 }}>
                       <ListItemButton sx={{ borderRadius: 1, '&:hover': { bgcolor: 'action.hover' } }}>
                         <ListItemText
@@ -177,7 +185,7 @@ export default function SidebarContent() {
                         key={index}
                         disabled={item.disable}
                         onClick={() => {
-                          handleClose(), item.onClick(deleteItemId as number)
+                          handleClose(), item.onClick(+chat._id)
                         }}
                       >
                         <ListItemIcon>
@@ -225,19 +233,7 @@ export default function SidebarContent() {
         </Stack>
         {/* Delete Chat */}
         {openDeleteConfirmation && (
-          <ConfirmationPopup
-            key="deletePopup"
-            heading="Delete Chat"
-            subheading={`Are you sure to delete this chat?`}
-            acceptButtonText="Delete"
-            loading={isDeleteLoading}
-            onCancel={handleCloseDelete}
-            onAccept={() =>
-              deleteSession(deleteItemId as number)
-                .unwrap()
-                .then(handleSuccess)
-            }
-          />
+          <ConfirmationPopup key="deletePopup" heading="Delete Chat" subheading={`Are you sure to delete this chat?`} acceptButtonText="Delete" loading={isDeleteLoading} onCancel={handleCloseDelete} onAccept={handleDelete} />
         )}
       </Stack>
     </>

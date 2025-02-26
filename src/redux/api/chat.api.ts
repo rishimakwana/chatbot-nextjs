@@ -3,6 +3,7 @@ import { setNewChat } from '../slice/chat.slice'
 import { api } from './api.config'
 import { TPaginationApiParams, TPaginationApiResponse } from '@/types'
 import { TGetSessionListResponse } from '@/types/session'
+import { AddSessionResponse } from '@/dto/Session.dto'
 
 export const chatApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -11,12 +12,12 @@ export const chatApi = api.injectEndpoints({
       providesTags: (result, error) =>
         !error && result?.list
           ? [
-              ...result.list.map(({ _id }: { _id: string }) => ({
-                type: 'Sessions' as const,
-                id: _id,
-              })),
-              { type: 'Sessions' as const, id: 'LIST' },
-            ]
+            ...result.list.map(({ _id }: { _id: number }) => ({
+              type: 'Sessions' as const,
+              id: _id,
+            })),
+            { type: 'Sessions' as const, id: 'LIST' },
+          ]
           : [{ type: 'Sessions' as const, id: 'LIST' }],
     }),
 
@@ -35,7 +36,6 @@ export const chatApi = api.injectEndpoints({
         body,
         headers: { hideSuccessToast: 'false' },
       }),
-      invalidatesTags: [{ type: 'Sessions', id: 'LIST' }],
     }),
 
     getChatHistory: builder.query<any, string>({
@@ -64,7 +64,7 @@ export const chatApi = api.injectEndpoints({
 
     deleteSession: builder.mutation<void, number>({
       query: (id) => ({ url: `/api/delete-session?session_id=${id}`, method: 'DELETE' }),
-      invalidatesTags: [{ type: 'Sessions', id: 'LIST' }],
+      // invalidatesTags: [{ type: 'Sessions', id: 'LIST' }],
     }),
   }),
 })

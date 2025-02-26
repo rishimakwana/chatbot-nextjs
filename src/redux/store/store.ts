@@ -6,6 +6,7 @@ import { rtkQueryLogger } from '../api/api.util'
 import { layoutSlice } from '../slice/layout.slice'
 import { userSlice } from '../slice/user.slice'
 import { chatSlice } from '../slice/chat.slice'
+import { sessionSlice } from '../slice/session.slice'
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
     [layoutSlice.name]: layoutSlice.reducer,
     [userSlice.name]: userSlice.reducer,
     [chatSlice.name]: chatSlice.reducer,
+    [sessionSlice.name]: sessionSlice.reducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware, rtkQueryLogger),
 })
