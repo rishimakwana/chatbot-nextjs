@@ -3,7 +3,6 @@ import { setNewChat } from '../slice/chat.slice'
 import { api } from './api.config'
 import { TPaginationApiParams, TPaginationApiResponse } from '@/types'
 import { TGetSessionListResponse } from '@/types/session'
-import { AddSessionResponse } from '@/dto/Session.dto'
 
 export const chatApi = api.injectEndpoints({
   endpoints: (builder) => ({
