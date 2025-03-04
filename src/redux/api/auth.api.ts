@@ -7,16 +7,16 @@ export const extendedApi = api.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation<{ token: string; user: Omit<UserDTO, 'profile'> }, { email: string; password: string; recaptchaToken: string }>({
       query: (body) => ({
-        url: '/auth/login',
+        url: '/api/login',
         method: 'POST',
         body,
         headers: { hideSuccessToast: 'true' },
       }),
     }),
 
-    lawyerRegister: builder.mutation<{ token: string; user: UserDTO }, any>({
+    register: builder.mutation<{ token: string; user: UserDTO }, any>({
       query: (body) => ({
-        url: '/auth/register',
+        url: '/api/register',
         method: 'POST',
         body,
         headers: { hideSuccessToast: 'true' },
@@ -27,25 +27,25 @@ export const extendedApi = api.injectEndpoints({
             setUser({ token, redirection: false })
             dispatch(updateUser(user))
           })
-          .catch(() => {})
+          .catch(() => { })
       },
     }),
 
     forgotPassword: builder.mutation<void, { email: string }>({
-      query: (body) => ({ url: '/auth/forgetPassword', method: 'POST', body }),
+      query: (body) => ({ url: '/api/forgetPassword', method: 'POST', body }),
     }),
 
     resetPassword: builder.mutation<void, { token: string; password: string }>({
-      query: ({ token, ...body }) => ({ url: `/auth/changePassword/${token}`, method: 'PUT', body }),
+      query: ({ token, ...body }) => ({ url: `/api/changePassword/${token}`, method: 'PUT', body }),
     }),
 
     updatePassword: builder.mutation<void, { password: string }>({
-      query: (body) => ({ url: `/auth/updatePassword`, method: 'PUT', body }),
+      query: (body) => ({ url: `/api/updatePassword`, method: 'PUT', body }),
     }),
 
-    updateLawyer: builder.mutation<{ token: string; user: UserDTO }, any>({
+    updateUser: builder.mutation<{ token: string; user: UserDTO }, any>({
       query: (body) => ({
-        url: '/auth/updateUser',
+        url: '/api/updateUser',
         method: 'PUT',
         body,
         headers: { hideSuccessToast: 'true' },
@@ -55,23 +55,19 @@ export const extendedApi = api.injectEndpoints({
           .then(({ data: { user } }) => {
             dispatch(updateUser(user))
           })
-          .catch(() => {})
+          .catch(() => { })
       },
     }),
 
     getUser: builder.query<UserDTO, void>({
-      query: () => '/auth/getProfile',
+      query: () => '/api/getProfile',
       // providesTags: ['profile'],
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-        await queryFulfilled.then(({ data }) => dispatch(updateUser(data))).catch(() => {})
+        await queryFulfilled.then(({ data }) => dispatch(updateUser(data))).catch(() => { })
       },
     }),
 
-    // updateProfile: builder.mutation<void, Pick<UserDTO, 'fullName' | 'phone'> & Pick<UserDTO['profile'], 'street' | 'city' | 'zipCode' | 'state'>>({
-    //   query: (body) => ({ url: '/auth/updateProfile', method: 'PUT', body }),
-    //   // invalidatesTags: (result, error) => (!error ? ['profile'] : []),
-    // }),
   }),
 })
 
-export const { useLoginMutation, useLawyerRegisterMutation, useUpdateLawyerMutation, useLazyGetUserQuery, useForgotPasswordMutation, useResetPasswordMutation, useUpdatePasswordMutation } = extendedApi
+export const { useLoginMutation, useRegisterMutation, useUpdateUserMutation, useLazyGetUserQuery, useForgotPasswordMutation, useResetPasswordMutation, useUpdatePasswordMutation } = extendedApi

@@ -1,7 +1,7 @@
 import { ChangeEvent } from 'react'
 import { FormControl, FormLabel, IconButton, Stack, TextField, Fade, CircularProgress } from '@mui/material'
 import { Controller, FieldPath, FieldValues } from 'react-hook-form'
-import { MdCheck, MdClose, MdRemoveRedEye, MdOutlineReportProblem } from 'react-icons/md'
+import { MdCheck, MdClose, MdOutlineReportProblem } from 'react-icons/md'
 
 import { FileFieldProps } from './FileField.type'
 

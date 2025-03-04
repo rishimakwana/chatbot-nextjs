@@ -31,11 +31,11 @@ export const phoneTest: TestConfig<string> = {
 export const passwordTest: TestConfig<string> = {
   name: 'validate',
   test: (value) => {
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\W_]{10,}$/
-    return passwordRegex.test(value)
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[a-zA-Z\d\W_]{8,}$/;
+    return passwordRegex.test(value);
   },
-  message: 'It must have at least 10 characters, 1 uppercase, 1 lowercase, and 1 digit.',
-}
+  message: 'Password must have minimum 8 characters, with at least 1 upper case letter, 1 lower case letter, 1 numeric and 1 special character.',
+};
 
 export const fileTest = ({ size, extensions = [], required = true }: { size?: number; extensions?: string[]; required?: boolean }): TestConfig<string | File | undefined> => ({
   name: 'validate',

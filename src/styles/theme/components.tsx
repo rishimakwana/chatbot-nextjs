@@ -227,10 +227,10 @@ export const overridesComponent = (theme: Theme) => {
                 px: 2.5,
                 minWidth: { xs: 'unset', md: 182 },
                 borderRadius: 2,
-                fontSize: 18,
+                fontSize: 12,
                 fontWeight: 500,
                 '&:hover': {
-                  fontSize: 19,
+                  fontSize: 13,
                   borderColor: theme.palette.primary.main,
                 },
               }),
