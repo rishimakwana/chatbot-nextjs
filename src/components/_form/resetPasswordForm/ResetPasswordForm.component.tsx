@@ -50,9 +50,10 @@ const ResetPasswordForm = () => {
 
         {/* Password */}
         <Grid2 size={12}>
+          <Typography variant="body1">New Password*</Typography>
           <InputField
             name="password"
-            label="New Password"
+            placeholder="Please enter your Password."
             type={showPassword ? 'text' : 'password'}
             control={control}
             slotProps={{
@@ -65,9 +66,10 @@ const ResetPasswordForm = () => {
 
         {/* Confirm Password */}
         <Grid2 size={12}>
+        <Typography variant="body1">Confirm New Password</Typography>
           <InputField
             name="confirmPassword"
-            label="Confirm New Password"
+            placeholder="Please confirm your Password."
             type={showConfirmPassword ? 'text' : 'password'}
             control={control}
             slotProps={{

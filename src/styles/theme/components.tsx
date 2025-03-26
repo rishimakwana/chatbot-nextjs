@@ -223,15 +223,14 @@ export const overridesComponent = (theme: Theme) => {
               style: theme.unstable_sx({
                 backgroundColor: theme.palette.orange.main,
                 color: theme.palette.orange.contrastText,
-                py: 1.5,
+                py: 1.6,
                 px: 2.5,
                 minWidth: { xs: 'unset', md: 182 },
                 borderRadius: 2,
-                fontSize: 12,
+                fontSize: 14,
                 fontWeight: 500,
                 '&:hover': {
-                  fontSize: 13,
-                  borderColor: theme.palette.primary.main,
+                  backgroundColor: theme.palette.orange.dark,
                 },
               }),
             },

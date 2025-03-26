@@ -10,7 +10,7 @@ Login.rootLayoutProps = {
   pageType: 'auth',
   sidebar: false,
   header: false,
-  footer: true,
+  footer: false,
 }
 
 Login.childLayout = (page) => <AuthLayout>{page}</AuthLayout>

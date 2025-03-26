@@ -37,6 +37,7 @@ export const createPalette = () => {
     },
     orange: {
       main: '#FF6059',
+      dark:'#FF2500',
       contrastText: '#ffffff',
     },
   } as Theme['palette']

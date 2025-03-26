@@ -39,7 +39,8 @@ const ForgotPasswordForm = () => {
 
         {/* Email */}
         <Grid2 size={12}>
-          <InputField name="email" type="email" label="Email ID *" control={control} />
+          <Typography variant="body1">Email ID</Typography>
+          <InputField name="email" type="email" placeholder="abc@example.com" control={control} />
         </Grid2>
 
         {/* Submit */}
