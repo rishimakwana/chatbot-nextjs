@@ -9,7 +9,7 @@ import Image from 'next/image'
 import pdfImage from '@/../public/images/pages/pdf.png'
 import seeAllDoc from '@/../public/images/pages/seealldocs.svg'
 import VisuallyHiddenInput from '../hiddenInput/HiddenInput.component'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { style } from './Header.style'
 import { useReduxDispatch, useReduxSelector } from '@/hooks'
 import { schema, TSchema } from './Header.config'
@@ -19,6 +19,7 @@ import { setSidebarDrawer, setSidebarDrawerDesktop } from '@/redux/slice/layout.
 
 export default function Header() {
   const [uploadPdf, { isLoading }] = useUploadPdfMutation()
+  const inputRef = useRef<HTMLInputElement>(null)
   const sidebarDrawerDesktop = useReduxSelector((state) => state.layout.sidebarDrawerDesktop)
 
   const [page, setPage] = useState(1)
@@ -27,7 +28,7 @@ export default function Header() {
   const dispatch = useReduxDispatch()
   const isLgDown = useMediaQuery((theme) => theme.breakpoints.down('lg'))
 
-  const { setValue } = useForm<TSchema>({
+  const { setValue, control } = useForm<TSchema>({
     resolver: yupResolver(schema),
     defaultValues: {
       file: '',
@@ -109,7 +110,7 @@ export default function Header() {
         ) : !isLgDown ? (
           <Button component="label" variant="orange" disabled={isLoading} startIcon={<AiOutlineUpload />}>
             Upload files
-            <VisuallyHiddenInput onChange={handleFileChangeAndSubmit} />
+            <input type="file" accept=".pdf,.doc,.docx,.xlsx" onChange={handleFileChangeAndSubmit} hidden ref={inputRef} />
           </Button>
         ) : (
           <Button component="label" variant="outlined" disabled={isLoading}>

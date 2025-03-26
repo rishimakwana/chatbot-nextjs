@@ -1,12 +1,10 @@
 import Head from 'next/head'
 import { Stack } from '@mui/material'
 
-import Header from '../../components/header/Header.component'
 import Sidebar from './components/sidebar/Sidebar.component'
 import ErrorBoundary from '@/components/errorBoundary/ErrorBoundary.component'
 import FullPageLoader from '@/components/fullPageLoader/FullPageLoader.component'
 import FullPageMessage from '@/components/fullPageMessage/FullPageMessage.component'
-import Alerts from './components/alerts/Alerts.compoent'
 import { RootLayoutProps } from './RootLayout.type'
 import { useAuth } from './RootLayout.hook'
 import { usePage, useReduxSelector } from '@/hooks'
@@ -40,7 +38,6 @@ export default function RootLayout(props: RootLayoutProps & { children: React.Re
             <Stack sx={style.body}>
               <Stack sx={style.main}>
                 <ErrorBoundary error={isError}>
-                  <Alerts />
                   {renderChildren()}
                 </ErrorBoundary>
               </Stack>

@@ -42,22 +42,26 @@ export const useAuth = ({ pageType }: RootLayoutProps) => {
     ;(async () => {
       if (!token && pageType === 'protected') await router.replace(`/auth/login?returnTo=${location.pathname}${location.search}${location.hash}`)
       else if (!token) setLoading(false)
-      else if (token && pageType === 'auth' && isLoggedIn && (await validate())) await router.replace('/dashboard/home')
+      else if (token && pageType === 'auth' && isLoggedIn && userData && userData.verified && (await validate())) await router.replace('/')
       else if (pageType === 'protected' && isLoggedIn && (await validate())) {
         let isPermission: boolean = true
         setPermission(isPermission)
         setLoading(false)
       }
     })()
-  }, [router.pathname, isLoggedIn])
+  }, [router.pathname, isLoggedIn, userData])
 
   const validate = async () => {
-    if (userData.status === 'pending') {
-      if (pageType !== 'auth') await router.push('/auth/lawyer/register')
+    if (userData && !userData.verified) {
+      if (pageType !== 'auth')
+        await router.push({
+          pathname: '/auth/register',
+          query: { showOtpForm: 'true' },
+        })
+
       setLoading(false)
       return false
     }
-
     return true
   }
 

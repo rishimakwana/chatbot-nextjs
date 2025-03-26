@@ -20,7 +20,7 @@ const handleRejectedAction = (action: any) => {
 
 const handleFulfilledAction = (action: any) => {
   const { payload, meta } = action
-  const message = payload?.message
+  const message = payload?.detail
   const method = meta.baseQueryMeta.request.method
   const hideToast = meta.baseQueryMeta.request.headers.get('hideSuccessToast') === 'true'
   if (!hideToast && method !== 'GET' && message) toast.success(message)

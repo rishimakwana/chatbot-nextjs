@@ -8,6 +8,7 @@ export const style: TStyle = {
     borderColor: 'divider',
     transition: 'width 0.3s ease-in-out',
     height: '100vh',
+    // height: 'calc(100vh - 50px)',
     maxWidth: '264px',
     pb: 2,
     px: 2,

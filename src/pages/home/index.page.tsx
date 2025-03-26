@@ -50,7 +50,7 @@ const Home: TPage = () => {
 
 Home.rootLayoutProps = {
   title: 'Home',
-  pageType: 'public',
+  pageType: 'protected',
 }
 
 export default Home

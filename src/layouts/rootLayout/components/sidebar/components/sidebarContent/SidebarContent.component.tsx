@@ -6,16 +6,36 @@ import { IoSearch } from 'react-icons/io5'
 import { MdDeleteForever } from 'react-icons/md'
 import { BsPlusLg, BsThreeDots } from 'react-icons/bs'
 import { useState, useEffect, useCallback } from 'react'
-import { Stack, Typography, InputAdornment, TextField, List, ListItem, ListItemText, ListItemButton, Button, IconButton, Menu, MenuItem, ListItemIcon, Fab, debounce } from '@mui/material'
+import {
+  Stack,
+  Typography,
+  InputAdornment,
+  TextField,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemButton,
+  Button,
+  IconButton,
+  Menu,
+  MenuItem,
+  ListItemIcon,
+  Fab,
+  debounce,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from '@mui/material'
 import { useInView } from 'react-intersection-observer'
 
 import { useReduxSelector, useUrlParams } from '@/hooks'
 import { style } from './SidebarContent.style'
 import { TAction, TFilter } from './SidebarContent.type'
-import { useDeleteSessionMutation, useLazyGetAllSessionsQuery } from '@/redux/api/chat.api'
+import { useDeleteSessionMutation, useLazyGetAllSessionsQuery, useUpdateSessionMutation } from '@/redux/api/chat.api'
 import ConfirmationPopup from '@/components/confirmationPopup/ConfirmationPopup.component'
-import { useDispatch, useSelector } from 'react-redux'
-import { addSessions } from '@/redux/slice/session.slice'
+import { useDispatch } from 'react-redux'
+import { addSessions, updateSessionTitle } from '@/redux/slice/session.slice'
 import { TGetSessionListResponse } from '@/types/session'
 
 export default function SidebarContent() {
@@ -32,6 +52,12 @@ export default function SidebarContent() {
   const [searchVal, setSearchVal] = useState((router.query.searchVal as string) || '')
   const [deleteSession, { isLoading: isDeleteLoading }] = useDeleteSessionMutation()
 
+  // renameDialog
+  const [renameDialogOpen, setRenameDialogOpen] = useState(false)
+  const [renamedChatId, setRenamedChatId] = useState<number | null | string>(null)
+  const [newChatTitle, setNewChatTitle] = useState('')
+
+  const [updateSession, { isLoading: isUpdateLoading }] = useUpdateSessionMutation()
   const sessions = useReduxSelector((state) => state.session.sessions)
 
   const filter: TFilter = {
@@ -46,12 +72,49 @@ export default function SidebarContent() {
 
   const handleClose = () => setTimeout(() => setAnchorEl(null), 200)
 
-  const handleActionClick = (status: string, id: number) => {
+  const handleActionClick = (status: string, id: number | string) => {
+    console.log(status, id)
     if (status === 'delete') {
       setOpenDeleteConfirmation(true)
     } else if (status === 'rename') {
-      // Open rename editor
+      // setRenamedChatId(id)
+      setRenameDialogOpen(true)
+
+      const chatToRename = sessions.find((chat) => chat._id == renamedChatId)
+      console.log(chatToRename, 'chatToRenamechatToRename')
+
+      setNewChatTitle(chatToRename?.title || '')
     }
+  }
+
+  const handleRename = async () => {
+    if (renamedChatId && newChatTitle.trim()) {
+      try {
+        await updateSession({
+          session_id: renamedChatId,
+          title: newChatTitle.trim(),
+        }).unwrap()
+
+        dispatch(
+          updateSessionTitle({
+            session_id: renamedChatId,
+            title: newChatTitle.trim(),
+          }),
+        )
+
+        setRenameDialogOpen(false)
+        setRenamedChatId(null)
+        setNewChatTitle('')
+      } catch (error) {
+        console.error('Failed to rename chat', error)
+      }
+    }
+  }
+
+  const handleCloseRenameDialog = () => {
+    setRenameDialogOpen(false)
+    setRenamedChatId(null)
+    setNewChatTitle('')
   }
 
   const handleCloseDelete = () => {
@@ -60,8 +123,8 @@ export default function SidebarContent() {
   }
 
   const ACTIONS: TAction[] = [
-    { label: 'Rename', Icon: GoPencil, color: 'primary', onClick: (id: number) => handleActionClick('rename', id) },
-    { label: 'Delete', Icon: MdDeleteForever, color: 'error', onClick: (id: number) => handleActionClick('delete', id) },
+    { label: 'Rename', Icon: GoPencil, color: 'primary', onClick: (id: number | string) => handleActionClick('rename', id) },
+    { label: 'Delete', Icon: MdDeleteForever, color: 'error', onClick: (id: number | string) => handleActionClick('delete', id) },
   ]
 
   const [scrollTrigger, isInView] = useInView()
@@ -172,6 +235,7 @@ export default function SidebarContent() {
                       onClick={(e) => {
                         setAnchorEl(e.currentTarget)
                         setDeleteItemId(chat._id)
+                        setRenamedChatId(chat._id)
                       }}
                       size="small"
                     >
@@ -185,7 +249,7 @@ export default function SidebarContent() {
                         key={index}
                         disabled={item.disable}
                         onClick={() => {
-                          handleClose(), item.onClick(+chat._id)
+                          handleClose(), item.onClick(chat._id)
                         }}
                       >
                         <ListItemIcon>
@@ -222,7 +286,7 @@ export default function SidebarContent() {
           </List>
         )}
         {/* Upgrade Plan */}
-        <Stack spacing={1} direction={'row'} bgcolor={'#EBECF0'} borderRadius={2} p={1.5}>
+        <Stack spacing={1} direction={'row'} bgcolor={'#EBECF0'} borderRadius={2} p={1.5} component={Link} href="/subscription">
           <Stack sx={style.upgradePlan}>
             <WiStars size={22} />
           </Stack>
@@ -235,6 +299,32 @@ export default function SidebarContent() {
         {openDeleteConfirmation && (
           <ConfirmationPopup key="deletePopup" heading="Delete Chat" subheading={`Are you sure to delete this chat?`} acceptButtonText="Delete" loading={isDeleteLoading} onCancel={handleCloseDelete} onAccept={handleDelete} />
         )}
+
+        {/* Delete Chat */}
+        <Dialog open={renameDialogOpen} onClose={handleCloseRenameDialog} maxWidth="xs" fullWidth>
+          <DialogTitle>Rename Title</DialogTitle>
+          <DialogContent>
+            <TextField
+              autoFocus
+              margin="dense"
+              label="Chat Name"
+              fullWidth
+              variant="outlined"
+              value={newChatTitle}
+              onChange={(e) => setNewChatTitle(e.target.value)}
+              error={!newChatTitle.trim()}
+              helperText={!newChatTitle.trim() ? 'Chat name cannot be empty' : ''}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button variant="outlined" color="inherit" onClick={handleCloseRenameDialog}>
+              Cancel
+            </Button>
+            <Button variant="orange" onClick={handleRename} disabled={!newChatTitle.trim() || isUpdateLoading}>
+              Rename
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Stack>
     </>
   )

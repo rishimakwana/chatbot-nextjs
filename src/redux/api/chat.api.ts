@@ -7,22 +7,22 @@ import { TGetSessionListResponse } from '@/types/session'
 export const chatApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getAllSessions: builder.query<TPaginationApiResponse<TGetSessionListResponse>, TPaginationApiParams>({
-      query: (params) => ({ url: '/api/get-all-sessions', params }),
+      query: (params) => ({ url: '/api/v1/get-all-sessions', params }),
       providesTags: (result, error) =>
         !error && result?.list
           ? [
-              ...result.list.map(({ _id }: { _id: number }) => ({
-                type: 'Sessions' as const,
-                id: _id,
-              })),
-              { type: 'Sessions' as const, id: 'LIST' },
-            ]
+            ...result.list.map(({ _id }: { _id: number }) => ({
+              type: 'Sessions' as const,
+              id: _id,
+            })),
+            { type: 'Sessions' as const, id: 'LIST' },
+          ]
           : [{ type: 'Sessions' as const, id: 'LIST' }],
     }),
 
     getSession: builder.query<any, void>({
       query: () => ({
-        url: '/api/get-session',
+        url: '/api/v1/get-session',
         method: 'GET',
         headers: { hideSuccessToast: 'false' },
       }),
@@ -30,23 +30,23 @@ export const chatApi = api.injectEndpoints({
 
     addSession: builder.mutation<any, void>({
       query: (body) => ({
-        url: '/api/add-session',
+        url: '/api/v1/add-session',
         method: 'POST',
         body,
-        headers: { hideSuccessToast: 'false' },
+        headers: { hideSuccessToast: 'true' },
       }),
     }),
 
     getChatHistory: builder.query<any, string>({
-      query: (sessionId) => `/api/get-chat-history/${sessionId}`,
+      query: (sessionId) => `/api/v1/get-chat-history/${sessionId}`,
     }),
 
     sendMessage: builder.mutation<sendMessageResponse, { session_id: string; query: string; isNewChat: boolean }>({
       query: ({ session_id, query }) => ({
-        url: `/api/sendMessage?query=${encodeURIComponent(query)}&session_id=${session_id}`,
+        url: `/api/v1/sendMessage?query=${encodeURIComponent(query)}&session_id=${session_id}`,
         method: 'POST',
         // body: { session_id, query },
-        headers: { hideSuccessToast: 'false' },
+        headers: { hideSuccessToast: 'true' },
       }),
       async onQueryStarted({ session_id, isNewChat }, { dispatch, queryFulfilled }) {
         if (isNewChat) dispatch(setNewChat({ sessionId: session_id, isNewChat: false }))
@@ -62,9 +62,27 @@ export const chatApi = api.injectEndpoints({
     }),
 
     deleteSession: builder.mutation<void, number>({
-      query: (id) => ({ url: `/api/delete-session?session_id=${id}`, method: 'DELETE' }),
+      query: (id) => ({ url: `/api/v1/delete-session?session_id=${id}`, method: 'DELETE' }),
       // invalidatesTags: [{ type: 'Sessions', id: 'LIST' }],
     }),
+
+    updateSession: builder.mutation<void, { session_id: number | string, title: string }>({
+      query: (body) => ({
+        url: '/api/v1/update-session',
+        method: 'PUT',
+        body,
+        headers: { hideSuccessToast: 'true' },
+      })
+    }),
+
+    summarizeDocument: builder.mutation<sendMessageResponse, { session_id: string; }>({
+      query: ({ session_id }) => ({
+        url: `/api/v1/summarizeDocument?session_id=${session_id}`,
+        method: 'POST',
+        headers: { hideSuccessToast: 'true' },
+      })
+    }),
+
   }),
 })
 
@@ -78,4 +96,6 @@ export const {
   useAddSessionMutation,
   useDeleteSessionMutation,
   useLazyGetAllSessionsQuery,
+  useUpdateSessionMutation,
+  useSummarizeDocumentMutation,
 } = chatApi

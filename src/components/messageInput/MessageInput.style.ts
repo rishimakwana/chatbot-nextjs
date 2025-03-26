@@ -10,4 +10,18 @@ export const style: TStyle = {
     width: '100%',
     flexWrap: 'wrap',
   },
+
+  suggestionStack: {
+    mt: 1,
+    p: 1,
+    borderRadius: 2,
+    textAlign: 'left',
+  },
+  suggestion: {
+    cursor: 'pointer',
+    transition: 'background-color 0.2s ease-in-out',
+    '&:hover': {
+      backgroundColor: '#E2E8F0',
+    },
+  }
 }

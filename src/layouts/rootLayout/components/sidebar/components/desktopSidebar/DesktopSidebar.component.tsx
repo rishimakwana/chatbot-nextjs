@@ -7,11 +7,13 @@ import SidebarContent from '../sidebarContent/SidebarContent.component'
 import { style } from './DesktopSidebar.style'
 import { useReduxDispatch, useReduxSelector } from '@/hooks'
 import { setSidebarDrawerDesktop } from '@/redux/slice/layout.slice'
+import Profile from '../../../profile/Profile.component'
 
 export default function DesktopSidebar() {
   const sidebarRef = useRef<HTMLElement | null>(null)
   const dispatch = useReduxDispatch()
   const sidebarDrawerDesktop = useReduxSelector((state) => state.layout.sidebarDrawerDesktop)
+  const { isLoggedIn } = useReduxSelector((state) => state.user)
 
   useEffect(() => {
     const sidebarElement = sidebarRef.current!
@@ -35,10 +37,14 @@ export default function DesktopSidebar() {
       {/* Logo */}
       <Stack direction="row" alignItems="center" justifyContent="space-between">
         <Logo />
+
         <IconButton onClick={() => dispatch(setSidebarDrawerDesktop(!sidebarDrawerDesktop))}>
           <GoSidebarCollapse className="icon-xxl" />
         </IconButton>
       </Stack>
+
+      {/* Profile */}
+      {isLoggedIn && <Profile />}
 
       {/* Menus */}
       <SidebarContent />

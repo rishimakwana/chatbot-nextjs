@@ -1,52 +1,16 @@
-import Image from 'next/image'
-import { useRouter } from 'next/router'
-import { Container, Fade, Grid2, Stack } from '@mui/material'
-
-import { TPage } from '@/types'
-import { style } from './Register.style'
-import Logo from '@/components/logo/Logo.component'
-import AuthLayout from '@/layouts/authLayout/AuthLayout.component'
-import backgroundImg from '@/../public/images/pages/backgroundImg.svg'
+import AuthPage from '@/components/auth/AuthPage.component'
 import RegisterForm from '@/components/_form/registerForn/RegisterForm.component'
+import AuthLayout from '@/layouts/authLayout/AuthLayout.component'
+import { TPage } from '@/types'
 
-const Register: TPage = () => {
-  const router = useRouter()
-  return (
-    <>
-      <Stack sx={style.root}>
-        <Stack alignItems="start">
-          <Logo collapsed={true} />
-        </Stack>
-
-        <Container>
-          <Grid2 container className="min-height-full" spacing={0}>
-            <Grid2 size={{ xs: 12, md: 6 }}>
-              <Stack sx={style.contentBox}>
-                <Fade in={true} timeout={500} key={router.pathname}>
-                  <Stack sx={style.childrenBox}>
-                    <RegisterForm />
-                  </Stack>
-                </Fade>
-              </Stack>
-            </Grid2>
-          </Grid2>
-        </Container>
-        <Stack sx={style.imageBox}>
-          <Stack sx={style.imageBoxContent} className="min-height-full">
-            <Image src={backgroundImg} alt="background image" fill sizes="50vw" />
-          </Stack>
-        </Stack>
-      </Stack>
-    </>
-  )
-}
+const Register: TPage = () => <AuthPage FormComponent={RegisterForm} />
 
 Register.rootLayoutProps = {
   title: 'Register',
   pageType: 'auth',
   sidebar: false,
   header: false,
-  footer: false,
+  footer: true,
 }
 
 Register.childLayout = (page) => <AuthLayout>{page}</AuthLayout>

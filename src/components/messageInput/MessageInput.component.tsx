@@ -1,36 +1,96 @@
-import { useState } from 'react'
 import { useRouter } from 'next/router'
-import { FaCircleArrowUp } from 'react-icons/fa6'
-import { Button, IconButton, Stack, TextField } from '@mui/material'
-import { PiChartLineThin } from 'react-icons/pi'
-import { LuFileScan } from 'react-icons/lu'
-import { BsFiletypeXlsx } from 'react-icons/bs'
 import { GoPencil } from 'react-icons/go'
-
+import { LuFileScan } from 'react-icons/lu'
+import { useDropzone } from 'react-dropzone'
+import { BsFiletypeXlsx } from 'react-icons/bs'
+import { PiChartLineThin } from 'react-icons/pi'
+import { FaCircleArrowUp } from 'react-icons/fa6'
+import { useEffect, useRef, useState } from 'react'
+import { Box, Button, IconButton, Stack, TextField, Typography } from '@mui/material'
 import { style } from './MessageInput.style'
 import { MessageInputProps } from './MessageInput.type'
+import { useUploadPdfMutation } from '@/redux/api/documents.api'
+import { MdClose } from 'react-icons/md'
+import { useAddSessionMutation, useSummarizeDocumentMutation } from '@/redux/api/chat.api'
+import { useReduxDispatch, useReduxSelector } from '@/hooks'
+import { addMessage } from '@/redux/slice/chat.slice'
+import { addSessions } from '@/redux/slice/session.slice'
 
 export default function MessageInput(props: MessageInputProps) {
   const { loading, onMessage } = props
+  const dispatch = useReduxDispatch()
+  const sessions = useReduxSelector((state) => state.session.sessions)
   const [message, setMessage] = useState('')
+  const [file, setFile] = useState<File | null>(null)
+  const [showSuggestions, setShowSuggestions] = useState(false)
+
+  const fileInputRef = useRef<HTMLInputElement | null>(null)
+
+  const [uploadPdf, { isLoading }] = useUploadPdfMutation()
+  const [fileData, setFileData] = useState<{ type: string; time: number } | null>(null)
+
+  const [addSession] = useAddSessionMutation()
+  const [summarizeDocument] = useSummarizeDocumentMutation()
+
+  const suggestions = ['How can I save money effectively?', 'What are the best ways to stay productive?', 'How do I improve my communication skills?']
+
+  const actionButtons = [
+    { icon: <PiChartLineThin size={18} />, text: 'Summarise', onClick: () => handleSummarise() },
+    { icon: <LuFileScan size={18} />, text: 'Upload Doc', onClick: () => handleFileUpload('doc') },
+    { icon: <BsFiletypeXlsx size={18} />, text: 'Upload XLSX', onClick: () => handleFileUpload('xlsx') },
+    { icon: <GoPencil size={18} />, text: 'Help me write', onClick: () => setShowSuggestions(!showSuggestions) },
+  ]
 
   const router = useRouter()
   const isNewChat = router.pathname === '/'
 
-  const renderActionButtons = () => (
-    <Stack gap={1} sx={style.actionButtons}>
-      {[
-        { icon: <PiChartLineThin size={18} />, text: 'Analyze data' },
-        { icon: <LuFileScan size={18} />, text: 'Scan .Doc' },
-        { icon: <BsFiletypeXlsx size={18} />, text: 'Scan .XLSX file' },
-        { icon: <GoPencil size={18} />, text: 'Help me write' },
-      ].map(({ icon, text }, index) => (
-        <Button key={index} variant="outlined" startIcon={icon}>
-          {text}
-        </Button>
-      ))}
-    </Stack>
-  )
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: { 'application/pdf': ['.pdf', '.doc', '.docx', '.xlsx'] },
+    onDrop: (acceptedFiles) => {
+      setFile(acceptedFiles[0])
+    },
+  })
+
+  const handleFileUpload = (type: string) => {
+    setFileData({ type, time: Date.now() })
+  }
+
+  useEffect(() => {
+    if (fileData) {
+      triggerFileInput()
+    }
+  }, [fileData])
+
+  const triggerFileInput = () => {
+    fileInputRef.current?.click()
+  }
+
+  const handleFileChangeAndSubmit = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (file) {
+      try {
+        await uploadPdf(file).unwrap()
+      } catch (error) {
+        console.error('Error uploading file:', error)
+      }
+      console.log('File selected:', file)
+    }
+  }
+
+  const handleSummarise = async () => {
+    try {
+      const session = await addSession().unwrap()
+      if (session) {
+        await summarizeDocument({ session_id: session._id }).unwrap()
+        router.push(`/chat/${session._id}`)
+        dispatch(addSessions([session, ...sessions]))
+      }
+      console.log('Document summarization triggered successfully')
+    } catch (error) {
+      console.error('Error during summarization:', error)
+    }
+  }
+
   const hasInput = message.trim().length > 0
 
   const handleSubmit = async (e?: React.FormEvent) => {
@@ -71,7 +131,34 @@ export default function MessageInput(props: MessageInputProps) {
         />
       </Stack>
 
-      {isNewChat && renderActionButtons()}
+      {/* Action Buttons */}
+      {isNewChat && !showSuggestions && (
+        <Stack gap={1} sx={style.actionButtons}>
+          {actionButtons.map(({ icon, text, onClick }, index) => (
+            <Button key={index} variant="outlined" startIcon={icon} onClick={onClick}>
+              {text}
+            </Button>
+          ))}
+        </Stack>
+      )}
+
+      {/* Suggestions */}
+      {showSuggestions && (
+        <Stack direction={'row'} justifyContent={'space-between'} sx={style.suggestionStack}>
+          <Stack>
+            {suggestions.map((suggestion, index) => (
+              <Typography key={index} onClick={() => setMessage(suggestion)} sx={style.suggestion}>
+                {suggestion}
+              </Typography>
+            ))}
+          </Stack>
+          <IconButton onClick={() => setShowSuggestions(false)}>
+            <MdClose size={20} />
+          </IconButton>
+        </Stack>
+      )}
+
+      <input type="file" accept={fileData?.type === 'doc' ? '.doc,.docx' : '.xlsx'} hidden ref={fileInputRef} onChange={handleFileChangeAndSubmit} />
     </Stack>
   )
 }

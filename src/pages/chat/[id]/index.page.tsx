@@ -10,7 +10,7 @@ const ChatSession: TPage = () => {
 
 ChatSession.rootLayoutProps = {
   title: 'DocBot',
-  pageType: 'public',
+  pageType: 'protected',
 }
 
 export default ChatSession

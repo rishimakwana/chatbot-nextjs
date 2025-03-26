@@ -3,7 +3,7 @@ import { TStyle } from '@/types'
 export const style: TStyle = {
   root: {
     gap: 2,
-    height: 'calc(100vh - 100px)',
+    height: 'calc(100vh - 175px)',
   },
   logo: {
     display: 'flex',

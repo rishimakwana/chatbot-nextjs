@@ -9,12 +9,13 @@ import { style } from './MobileSidebar.style'
 export default function MobileSidebar() {
   const dispatch = useReduxDispatch()
   const sidebarDrawer = useReduxSelector((state) => state.layout.sidebarDrawer)
+  const { isLoggedIn } = useReduxSelector((state) => state.user)
 
   return (
     <SwipeableDrawer open={sidebarDrawer} onClose={() => dispatch(setSidebarDrawer(false))} onOpen={() => '👻 ignore me'} disableSwipeToOpen keepMounted>
       <Stack component="aside" sx={style.root}>
         {/* Profile */}
-        <Profile />
+        {isLoggedIn && <Profile />}
 
         {/* Content */}
         <SidebarContent />

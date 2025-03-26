@@ -7,7 +7,7 @@ const DocumentList: TPage = () => {
 
 DocumentList.rootLayoutProps = {
   title: 'Document List',
-  pageType: 'public',
+  pageType: 'protected',
 }
 
 export default DocumentList

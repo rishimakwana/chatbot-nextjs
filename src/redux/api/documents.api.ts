@@ -9,7 +9,7 @@ export const documentsApi = api.injectEndpoints({
         const formData = new FormData()
         formData.append('file', file)
         return {
-          url: '/api/upload-pdf',
+          url: '/api/v1/upload-file',
           method: 'POST',
           body: formData,
         }
@@ -18,12 +18,12 @@ export const documentsApi = api.injectEndpoints({
     }),
 
     getAllDocuments: builder.query<TPaginationApiResponse<DocumentDTO>, TPaginationApiParams>({
-      query: (params) => ({ url: '/api/get-files', params }),
+      query: (params) => ({ url: '/api/v1/get-files', params }),
       providesTags: (result, error) => (!error ? [...result!.list.map(({ _id }) => ({ type: 'Documents' as const, id: _id })), { type: 'Documents', id: 'LIST' }] : [{ type: 'Documents', id: 'LIST' }]),
     }),
 
     deleteDocument: builder.mutation<void, number>({
-      query: (id) => ({ url: `/api/delete-file?document_id=${id}`, method: 'DELETE' }),
+      query: (id) => ({ url: `/api/v1/delete-file?document_id=${id}`, method: 'DELETE' }),
       invalidatesTags: [{ type: 'Documents', id: 'LIST' }],
     }),
   }),

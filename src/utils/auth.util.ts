@@ -13,7 +13,7 @@ export const setUser = ({ token, redirection = true }: { token: string; redirect
   if (redirection) {
     const urlParams = new URLSearchParams(location.search)
     const returnTo = urlParams.get('returnTo')
-    const redirectUrl = returnTo ?? '/dashboard/home'
+    const redirectUrl = returnTo ?? '/'
 
     location.replace(redirectUrl)
   }

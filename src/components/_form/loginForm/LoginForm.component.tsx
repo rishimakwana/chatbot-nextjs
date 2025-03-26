@@ -13,6 +13,7 @@ import { setUser } from '@/utils'
 import Logo from '@/components/logo/Logo.component'
 import { useRouter } from 'next/router'
 import { schema, TSchema } from './LoginForm.config'
+import Link from 'next/link'
 
 const LoginForm = () => {
   const [login] = useLoginMutation()
@@ -69,7 +70,7 @@ const LoginForm = () => {
         {/* Forgot Password */}
         <Grid2 size={12}>
           <Stack alignItems="end">
-            <MuiLink href="#">Forgot Password?</MuiLink>
+            <MuiLink href="/auth/forgot-password">Forgot Password?</MuiLink>
           </Stack>
         </Grid2>
 
@@ -84,6 +85,12 @@ const LoginForm = () => {
             Login
           </Button>
         </Grid2>
+
+        <Stack>
+          <Typography variant="body2" textAlign={'center'} color="primary.main">
+            Are You a New User? <Link href="/auth/register">Register</Link>
+          </Typography>
+        </Stack>
       </Grid2>
     </Stack>
   )

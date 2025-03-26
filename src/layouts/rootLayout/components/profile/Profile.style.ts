@@ -11,4 +11,7 @@ export const style: TStyle = {
     width: 48,
     borderRadius: 4,
   },
+  userInfo: {
+    width: "50%",
+  }
 }

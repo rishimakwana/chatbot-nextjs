@@ -32,7 +32,7 @@ export const extendedApi = api.injectEndpoints({
     }),
 
     forgotPassword: builder.mutation<void, { email: string }>({
-      query: (body) => ({ url: '/api/forgetPassword', method: 'POST', body }),
+      query: (body) => ({ url: '/api/forgotPassword', method: 'POST', body }),
     }),
 
     resetPassword: builder.mutation<void, { token: string; password: string }>({
@@ -67,7 +67,20 @@ export const extendedApi = api.injectEndpoints({
       },
     }),
 
+    resendOtp: builder.mutation<void, { userId: number }>({
+      query: (body) => ({ url: '/api/resendOtp/?userId=${userId}', method: 'POST', body }),
+    }),
+
+    verifyOtp: builder.mutation<{ token: string }, { email: string; otp: string }>({
+      query: (body) => ({
+        url: '/api/verifyOtp',
+        method: 'POST',
+        body,
+        headers: { hideSuccessToast: 'true' },
+      }),
+    }),
+
   }),
 })
 
-export const { useLoginMutation, useRegisterMutation, useUpdateUserMutation, useLazyGetUserQuery, useForgotPasswordMutation, useResetPasswordMutation, useUpdatePasswordMutation } = extendedApi
+export const { useLoginMutation, useRegisterMutation, useUpdateUserMutation, useLazyGetUserQuery, useForgotPasswordMutation, useResetPasswordMutation, useUpdatePasswordMutation, useResendOtpMutation, useVerifyOtpMutation } = extendedApi
