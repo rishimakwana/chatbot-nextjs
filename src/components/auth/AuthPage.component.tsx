@@ -17,9 +17,13 @@ const AuthPage: React.FC<AuthPageProps> = ({ FormComponent }) => {
     <Stack sx={style.root}>
       <Grid2 container>
         <Grid2 size={6}>
-        <Logo collapsed={true} />
+          <Stack alignItems={{ xs: 'center', md: 'start' }}>
+            <Logo collapsed={true} />
+          </Stack>
           <Fade in={true} timeout={500} key={router.pathname}>
-            <FormComponent />
+            <Stack>
+              <FormComponent />
+            </Stack>
           </Fade>
         </Grid2>
         <Grid2 size={6}>
