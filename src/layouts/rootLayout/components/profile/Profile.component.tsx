@@ -72,6 +72,7 @@ export default function Profile() {
               </ListItemIcon>
             )}
             <ListItemText>{item.label}</ListItemText>
+          </MenuItem>
         ))}
       </Menu>
 
