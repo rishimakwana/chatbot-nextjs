@@ -61,43 +61,47 @@ export default function VerifyOtpForm({ data }: VerifyOtpFormProps) {
   }
 
   return (
-    <Grid2 container component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
-      {/* Heading */}
-      <Grid2 size={12}>
-        <Stack gap={1}>
-          <Typography variant="display1" textAlign={'center'} color="primary.main">
-            Verification
-          </Typography>
-          <Typography variant="body2" textAlign={'center'}>
-            We've sent the verification OTP on your email , please enter the OTP here to create your account.
-          </Typography>
-        </Stack>
-      </Grid2>
+    <Stack height={'calc(100vh - 90px)'} justifyContent={'center'}>
+      <Stack alignItems={'center'} justifyContent={'center'} maxWidth={'400px'} mx={'auto'} flex={1}>
+        <Grid2 container component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
+          {/* Heading */}
+          <Grid2 size={12}>
+            <Stack gap={1}>
+              <Typography variant="display1" textAlign={'center'} color="primary.main">
+                Verification
+              </Typography>
+              <Typography variant="body2" textAlign={'center'} px={{xs: 0, sm: 3}}>
+                We've sent the verification OTP on your email , please enter the OTP here to create your account.
+              </Typography>
+            </Stack>
+          </Grid2>
 
-      {/* OTP */}
-      <Grid2 size={12} my={2} display="flex" justifyContent="center" alignItems="center">
-        <OtpField name="otp" control={control} />
-      </Grid2>
+          {/* OTP */}
+          <Grid2 size={12} my={2}>
+              <OtpField name="otp" control={control} />
+          </Grid2>
 
-      <Grid2 size={12} mt={1}>
-        <Button fullWidth variant="orange" type="submit" size="large" loading={isSubmitting}>
-          Verify
-        </Button>
-      </Grid2>
+          <Grid2 size={12} mt={1}>
+            <Button fullWidth variant="orange" type="submit" size="large" loading={isSubmitting}>
+              Verify
+            </Button>
+          </Grid2>
 
-      {/* Resend */}
-      <Grid2 size={12}>
-        <Stack direction="row" gap={1}>
-          <Typography>Didn't receive the OTP?</Typography>
-          {resendOtpApiState.isLoading ? (
-            <CircularProgress size={18} />
-          ) : (
-            <MuiLink onClick={handleResend} underline={isResendDisabled ? 'none' : 'always'} sx={isResendDisabled ? { cursor: 'not-allowed', pointerEvents: 'none', color: 'text.disabled' } : {}}>
-              {isResendDisabled ? `Resend in ${resendTimer}s` : 'Resend'}
-            </MuiLink>
-          )}
-        </Stack>
-      </Grid2>
-    </Grid2>
+          {/* Resend */}
+          <Grid2 size={12}>
+            <Stack direction="row" gap={1} justifyContent="center">
+              <Typography>Didn't receive the OTP?</Typography>
+              {resendOtpApiState.isLoading ? (
+                <CircularProgress size={18} />
+              ) : (
+                <MuiLink onClick={handleResend} underline={isResendDisabled ? 'none' : 'always'} sx={isResendDisabled ? { cursor: 'not-allowed', pointerEvents: 'none', color: 'text.disabled' } : {}}>
+                  {isResendDisabled ? `Resend in ${resendTimer}s` : 'Resend'}
+                </MuiLink>
+              )}
+            </Stack>
+          </Grid2>
+        </Grid2>
+      </Stack>
+    </Stack>
   )
 }

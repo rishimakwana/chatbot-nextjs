@@ -21,7 +21,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ FormComponent }) => {
             <Logo collapsed={true} />
           </Stack>
           <Fade in={true} timeout={500} key={router.pathname}>
-            <Stack>
+            <Stack alignItems={'center'}>
               <FormComponent />
             </Stack>
           </Fade>

@@ -11,6 +11,7 @@ export const style: TStyle = {
     '.input-otp-container': {
       display: 'flex',
       alignItems: 'center',
+      justifyContent: 'center',
       gap: 1,
       '&:has(:disabled)': { opacity: 0.3 },
       '--border-color': 'rgba(0, 0, 0, 0.23)',
