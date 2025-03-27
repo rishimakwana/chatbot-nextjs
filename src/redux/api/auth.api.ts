@@ -35,8 +35,19 @@ export const extendedApi = api.injectEndpoints({
       query: (body) => ({ url: '/api/forgotPassword', method: 'POST', body }),
     }),
 
-    resetPassword: builder.mutation<void, { token: string; password: string }>({
-      query: ({ token, ...body }) => ({ url: `/api/changePassword/${token}`, method: 'PUT', body }),
+    // resetPassword: builder.mutation<void, { token: string; password: string }>({
+    //   query: ({ token, ...body }) => ({ url: `/api/changePassword/${token}`, method: 'PUT', body }),
+    // }),
+
+    resetPassword: builder.mutation<void, { token: string; newPassword: string }>({
+      query: ({ token, newPassword }) => ({
+        url: `/api/resetPassword`,
+        method: 'POST',
+        body: { newPassword },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
     }),
 
     updatePassword: builder.mutation<void, { password: string }>({

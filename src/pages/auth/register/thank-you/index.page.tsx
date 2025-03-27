@@ -13,7 +13,7 @@ const ThankYou: TPage = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       router.push('/')
-    }, 5000)
+    }, 8000)
 
     return () => clearTimeout(timer) // Cleanup in case the component unmounts
   }, [router])

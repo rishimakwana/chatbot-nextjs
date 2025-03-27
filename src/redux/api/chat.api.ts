@@ -75,9 +75,9 @@ export const chatApi = api.injectEndpoints({
       })
     }),
 
-    summarizeDocument: builder.mutation<sendMessageResponse, { session_id: string; }>({
-      query: ({ session_id }) => ({
-        url: `/api/v1/summarizeDocument?session_id=${session_id}`,
+    summarizeDocument: builder.mutation<any, { sessionId: string; }>({
+      query: ({ sessionId }) => ({
+        url: `/api/v1/summarizeDocument?session_id=${sessionId}`,
         method: 'POST',
         headers: { hideSuccessToast: 'true' },
       })

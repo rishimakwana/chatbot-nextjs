@@ -25,6 +25,7 @@ export default function VerifyOtpForm({ data }: VerifyOtpFormProps) {
     control,
     handleSubmit,
     setValue,
+    getValues,
     formState: { isSubmitting, errors },
   } = useForm<TSchema>({
     resolver: yupResolver(schema),
@@ -49,7 +50,8 @@ export default function VerifyOtpForm({ data }: VerifyOtpFormProps) {
   const handleResend = async () => {
     try {
       if (resendTimer > 0) return
-      await resendOtp({ email: data.email }).unwrap()
+      const updatedEmail = getValues('email')
+      await resendOtp({ email: updatedEmail }).unwrap()
       setResendTimer(30)
     } catch (err) {}
   }
@@ -61,7 +63,7 @@ export default function VerifyOtpForm({ data }: VerifyOtpFormProps) {
   }
 
   return (
-    <Stack height={'calc(100vh - 90px)'} justifyContent={'center'}>
+    <Stack height={'calc(100vh - 106px)'} justifyContent={'center'}>
       <Stack alignItems={'center'} justifyContent={'center'} maxWidth={'400px'} mx={'auto'} flex={1}>
         <Grid2 container component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
           {/* Heading */}

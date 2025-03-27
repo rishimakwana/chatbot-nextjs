@@ -4,7 +4,7 @@ import { CiCirclePlus } from 'react-icons/ci'
 import { AiOutlineUpload } from 'react-icons/ai'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { GoSidebarCollapse, GoUpload } from 'react-icons/go'
-import { Box, Button, IconButton, Stack, Typography, useMediaQuery } from '@mui/material'
+import { Box, Button, CircularProgress, IconButton, Skeleton, Stack, Typography, useMediaQuery } from '@mui/material'
 import Image from 'next/image'
 import pdfImage from '@/../public/images/pages/pdf.png'
 import seeAllDoc from '@/../public/images/pages/seealldocs.svg'
@@ -90,13 +90,22 @@ export default function Header() {
                 </Stack>
               ))}
               {/* Upload Button as a Card */}
-              <Stack sx={{ ...style.docCard, cursor: 'pointer' }}>
-                <CiCirclePlus size={28} />
-                <VisuallyHiddenInput onChange={handleFileChangeAndSubmit} />
-                <Typography variant="body2" color="primary.main" fontSize={11}>
-                  Upload File
-                </Typography>
-              </Stack>
+
+              {isLoading ? (
+                <CircularProgress size={24} />
+              ) : (
+                // <Button component="label" variant="outlined" disabled={isLoading} startIcon={<CiCirclePlus size={28} />}>
+                //   Upload files
+                //   <input type="file" accept=".pdf,.doc,.docx,.xlsx" onChange={handleFileChangeAndSubmit} hidden ref={inputRef} />
+                // </Button>
+                <Stack sx={{ ...style.docCard, cursor: 'pointer' }}>
+                  <CiCirclePlus size={28} />
+                  <VisuallyHiddenInput onChange={handleFileChangeAndSubmit} />
+                  <Typography variant="body2" color="primary.main" fontSize={11}>
+                    Upload File
+                  </Typography>
+                </Stack>
+              )}
             </>
           )}
         </Box>

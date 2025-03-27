@@ -13,7 +13,7 @@ import { useUploadPdfMutation } from '@/redux/api/documents.api'
 import { MdClose } from 'react-icons/md'
 import { useAddSessionMutation, useSummarizeDocumentMutation } from '@/redux/api/chat.api'
 import { useReduxDispatch, useReduxSelector } from '@/hooks'
-import { addMessage } from '@/redux/slice/chat.slice'
+import { addMessage, setLoading } from '@/redux/slice/chat.slice'
 import { addSessions } from '@/redux/slice/session.slice'
 
 export default function MessageInput(props: MessageInputProps) {
@@ -80,15 +80,13 @@ export default function MessageInput(props: MessageInputProps) {
   const handleSummarise = async () => {
     try {
       const session = await addSession().unwrap()
-      if (session) {
-        await summarizeDocument({ session_id: session._id }).unwrap()
-        router.push(`/chat/${session._id}`)
-        dispatch(addSessions([session, ...sessions]))
+      const sessionId = session._id
+      if (sessionId) {
+        const { title, summary } = await summarizeDocument({ sessionId }).unwrap()
+        dispatch(addMessage({ sessionId, messages: [{ type: 'question', content: title }] }))
+        dispatch(setLoading({ sessionId, isLoading: true }))
       }
-      console.log('Document summarization triggered successfully')
-    } catch (error) {
-      console.error('Error during summarization:', error)
-    }
+    } catch (error) {}
   }
 
   const hasInput = message.trim().length > 0
