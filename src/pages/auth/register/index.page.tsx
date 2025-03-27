@@ -10,7 +10,7 @@ Register.rootLayoutProps = {
   pageType: 'auth',
   sidebar: false,
   header: false,
-  footer: true,
+  footer: false,
 }
 
 Register.childLayout = (page) => <AuthLayout>{page}</AuthLayout>

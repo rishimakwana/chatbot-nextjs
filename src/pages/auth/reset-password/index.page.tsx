@@ -10,7 +10,7 @@ ResetPassword.rootLayoutProps = {
   pageType: 'auth',
   sidebar: false,
   header: false,
-  footer: true,
+  footer: false,
 }
 
 ResetPassword.childLayout = (page) => <AuthLayout>{page}</AuthLayout>

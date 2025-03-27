@@ -10,7 +10,7 @@ ForgotPassword.rootLayoutProps = {
   pageType: 'auth',
   sidebar: false,
   header: false,
-  footer: true,
+  footer: false,
 }
 
 ForgotPassword.childLayout = (page) => <AuthLayout>{page}</AuthLayout>

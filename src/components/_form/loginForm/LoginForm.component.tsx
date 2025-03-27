@@ -32,8 +32,8 @@ const LoginForm = () => {
 
   return (
     <>
-      <Stack>
-        <Grid2 spacing={3} container component="form" noValidate onSubmit={handleSubmit(onSubmit)} >
+      <Stack width={'362px'} alignItems={'center'}>
+        <Grid2 spacing={3} container component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
           {/* Heading */}
           <Grid2 size={12} mb={2}>
             <Typography variant="display1" textAlign={'center'} color="primary.main">
@@ -43,14 +43,18 @@ const LoginForm = () => {
 
           {/* Email */}
           <Grid2 size={12}>
-            <Typography mb={1} variant="body1">Email ID</Typography>
+            <Typography mb={1} variant="body1">
+              Email ID
+            </Typography>
             <InputField name="email" type="email" placeholder="abc@example.com" control={control} />
           </Grid2>
 
           {/* Password */}
           <Grid2 size={12}>
             <Stack justifyContent={'space-between'} direction={'row'}>
-              <Typography mb={1} variant="body1">Passwrod</Typography>
+              <Typography mb={1} variant="body1">
+                Passwrod
+              </Typography>
               {/* Forgot Password */}
               <MuiLink href="/auth/forgot-password" sx={{ textDecoration: 'none' }}>
                 Forgot Password?
@@ -80,7 +84,10 @@ const LoginForm = () => {
               Login
             </Button>
             <Typography variant="body2" color="primary.main" mt={2} textAlign={'center'}>
-              Are You a New User? <Link href="/auth/register" style={{fontWeight:600}}>Register</Link>
+              Are You a New User?{' '}
+              <Link href="/auth/register" style={{ fontWeight: 600 }}>
+                Register
+              </Link>
             </Typography>
           </Grid2>
         </Grid2>

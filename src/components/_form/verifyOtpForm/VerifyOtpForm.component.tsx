@@ -1,34 +1,44 @@
-import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
+import { useEffect, useState } from 'react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Grid2, Stack, Typography, Link as MuiLink, CircularProgress, Button } from '@mui/material'
 
 import OtpField from '../otpField/OtpField.component'
-import { setUser } from '@/utils'
-import { useReduxSelector } from '@/hooks'
+import { updateUser } from '@/redux/slice/user.slice'
 import { schema, TSchema } from './VerifyOtpForm.config'
 import { VerifyOtpFormProps } from './VerifyOtpForm.type'
+import { useReduxDispatch, useReduxSelector } from '@/hooks'
 import { useResendOtpMutation, useVerifyOtpMutation } from '@/redux/api/auth.api'
 
 export default function VerifyOtpForm({ data }: VerifyOtpFormProps) {
+  const router = useRouter()
+  const dispatch = useReduxDispatch()
   const [resendTimer, setResendTimer] = useState(0)
   const isResendDisabled = resendTimer > 0
 
   const [verifyOtp] = useVerifyOtpMutation()
   const [resendOtp, resendOtpApiState] = useResendOtpMutation()
-  const { isLoggedIn, userData } = useReduxSelector((state) => state.user)
+  const { userData } = useReduxSelector((state) => state.user)
 
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { isSubmitting, errors },
   } = useForm<TSchema>({
     resolver: yupResolver(schema),
     defaultValues: {
       ...data,
-      userId: userData?._id || 0,
+      email: userData?.email || '',
     },
   })
+
+  useEffect(() => {
+    if (userData?.email) {
+      setValue('email', userData.email)
+    }
+  }, [userData])
 
   useEffect(() => {
     if (resendTimer <= 0) return
@@ -39,15 +49,15 @@ export default function VerifyOtpForm({ data }: VerifyOtpFormProps) {
   const handleResend = async () => {
     try {
       if (resendTimer > 0) return
-      await resendOtp({ userId: userData?._id }).unwrap()
+      await resendOtp({ email: data.email }).unwrap()
       setResendTimer(30)
     } catch (err) {}
   }
 
   const onSubmit = async (formData: TSchema) => {
     await verifyOtp(formData).unwrap()
-
-    // setUser({ token })
+    dispatch(updateUser({ ...userData, verified: true }))
+    router.replace('/auth/register/thank-you')
   }
 
   return (
@@ -68,11 +78,6 @@ export default function VerifyOtpForm({ data }: VerifyOtpFormProps) {
       <Grid2 size={12} my={2} display="flex" justifyContent="center" alignItems="center">
         <OtpField name="otp" control={control} />
       </Grid2>
-
-      {/* Submit */}
-      {/* <Grid2 size={12} mt={1}>
-        <Button type="submit">Verify</Button>
-      </Grid2> */}
 
       <Grid2 size={12} mt={1}>
         <Button fullWidth variant="orange" type="submit" size="large" loading={isSubmitting}>

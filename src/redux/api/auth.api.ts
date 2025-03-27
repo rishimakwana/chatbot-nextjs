@@ -67,8 +67,8 @@ export const extendedApi = api.injectEndpoints({
       },
     }),
 
-    resendOtp: builder.mutation<void, { userId: number }>({
-      query: (body) => ({ url: '/api/resendOtp/?userId=${userId}', method: 'POST', body }),
+    resendOtp: builder.mutation<void, { email: string }>({
+      query: (body) => ({ url: `/api/resendOtp/?email=${body.email}`, method: 'POST', body }),
     }),
 
     verifyOtp: builder.mutation<{ token: string }, { email: string; otp: string }>({

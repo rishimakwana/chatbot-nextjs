@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 import { useMemo, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -11,12 +10,11 @@ import VerifyOtpForm from '../verifyOtpForm/VerifyOtpForm.component'
 import InputField from '@/components/_ui/inputField/InputField.component'
 import { setUser } from '@/utils'
 import { useReduxDispatch } from '@/hooks'
+import { updateUser } from '@/redux/slice/user.slice'
 import { schema, TSchema } from './RegisterForm.config'
 import { useRegisterMutation } from '@/redux/api/auth.api'
-import { updateUser } from '@/redux/slice/user.slice'
 
 const RegisterForm = () => {
-  const router = useRouter()
   const dispatch = useReduxDispatch()
   const [register] = useRegisterMutation()
   const [showPassword, setShowPassword] = useState(false)
@@ -39,12 +37,9 @@ const RegisterForm = () => {
   })
 
   const onSubmit = async (formData: TSchema) => {
-    // const { token } = await register(formData).unwrap()
     const { token, user } = await register(formData).unwrap()
-    // Save user in Redux store
     dispatch(updateUser(user))
     setUser({ token, redirection: false })
-
     setShowOtpForm(true)
   }
 
@@ -64,21 +59,27 @@ const RegisterForm = () => {
             </Stack>
           </Grid2>
 
-          <Grid2 size={12}>
-            <Stack gap={2} justifyContent={'center'} direction={'row'}>
-              {/* Full Name */}
+          <Grid2 container spacing={2}>
+            {/* Full Name */}
+            <Grid2>
+              {/* <Stack spacing={1}> */}
               <Typography variant="body1">Full Name*</Typography>
               <InputField name="fullName" type="text" placeholder="Please enter your Full Name." control={control} />
+              {/* </Stack> */}
+            </Grid2>
 
-              {/* Email */}
+            {/* Email */}
+            <Grid2>
+              {/* <Stack spacing={1}> */}
               <Typography variant="body1">Email*</Typography>
               <InputField name="email" type="email" placeholder="Please enter an Email Id." control={control} />
-            </Stack>
+              {/* </Stack> */}
+            </Grid2>
           </Grid2>
 
           {/* Password */}
           <Grid2 size={12}>
-            <Stack gap={2}>
+            <Stack gap={1}>
               <Typography variant="body1">Password*</Typography>
               <InputField
                 name="password"
@@ -103,7 +104,7 @@ const RegisterForm = () => {
 
           {/* Confirm Password */}
           <Grid2 size={12}>
-          <Typography variant="body1">Confirm Password*</Typography>
+            <Typography variant="body1">Confirm Password*</Typography>
             <InputField
               name="confirmPassword"
               placeholder="Please confirm your Password."
