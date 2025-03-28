@@ -6,20 +6,14 @@ import { BsFiletypeXlsx } from 'react-icons/bs'
 import { PiChartLineThin } from 'react-icons/pi'
 import { FaCircleArrowUp } from 'react-icons/fa6'
 import { useEffect, useRef, useState } from 'react'
-import { Box, Button, IconButton, Stack, TextField, Typography } from '@mui/material'
+import { Button, IconButton, Stack, TextField, Typography } from '@mui/material'
 import { style } from './MessageInput.style'
 import { MessageInputProps } from './MessageInput.type'
 import { useUploadPdfMutation } from '@/redux/api/documents.api'
 import { MdClose } from 'react-icons/md'
-import { useAddSessionMutation, useSummarizeDocumentMutation } from '@/redux/api/chat.api'
-import { useReduxDispatch, useReduxSelector } from '@/hooks'
-import { addMessage, setLoading } from '@/redux/slice/chat.slice'
-import { addSessions } from '@/redux/slice/session.slice'
 
 export default function MessageInput(props: MessageInputProps) {
-  const { loading, onMessage } = props
-  const dispatch = useReduxDispatch()
-  const sessions = useReduxSelector((state) => state.session.sessions)
+  const { loading, onMessage, onSummarize } = props
   const [message, setMessage] = useState('')
   const [file, setFile] = useState<File | null>(null)
   const [showSuggestions, setShowSuggestions] = useState(false)
@@ -29,13 +23,10 @@ export default function MessageInput(props: MessageInputProps) {
   const [uploadPdf, { isLoading }] = useUploadPdfMutation()
   const [fileData, setFileData] = useState<{ type: string; time: number } | null>(null)
 
-  const [addSession] = useAddSessionMutation()
-  const [summarizeDocument] = useSummarizeDocumentMutation()
-
   const suggestions = ['How can I save money effectively?', 'What are the best ways to stay productive?', 'How do I improve my communication skills?']
 
   const actionButtons = [
-    { icon: <PiChartLineThin size={18} />, text: 'Summarise', onClick: () => handleSummarise() },
+    { icon: <PiChartLineThin size={18} />, text: 'Summarise', onClick: () => onSummarize && onSummarize() },
     { icon: <LuFileScan size={18} />, text: 'Upload Doc', onClick: () => handleFileUpload('doc') },
     { icon: <BsFiletypeXlsx size={18} />, text: 'Upload XLSX', onClick: () => handleFileUpload('xlsx') },
     { icon: <GoPencil size={18} />, text: 'Help me write', onClick: () => setShowSuggestions(!showSuggestions) },
@@ -75,18 +66,6 @@ export default function MessageInput(props: MessageInputProps) {
       }
       console.log('File selected:', file)
     }
-  }
-
-  const handleSummarise = async () => {
-    try {
-      const session = await addSession().unwrap()
-      const sessionId = session._id
-      if (sessionId) {
-        const { title, summary } = await summarizeDocument({ sessionId }).unwrap()
-        dispatch(addMessage({ sessionId, messages: [{ type: 'question', content: title }] }))
-        dispatch(setLoading({ sessionId, isLoading: true }))
-      }
-    } catch (error) {}
   }
 
   const hasInput = message.trim().length > 0

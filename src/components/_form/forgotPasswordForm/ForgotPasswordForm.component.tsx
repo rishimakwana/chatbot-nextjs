@@ -24,7 +24,7 @@ const ForgotPasswordForm = () => {
   }
 
   return (
-    <Stack height={'calc(100vh - 90px)'} justifyContent={'center'}  width={1}>
+    <Stack height={'calc(100vh - 90px)'} justifyContent={'center'} width={1}>
       <Stack alignItems={'center'} justifyContent={'center'} maxWidth={'600px'} mx={'auto'} flex={1}>
         <Grid2 container component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
           {/* Heading */}

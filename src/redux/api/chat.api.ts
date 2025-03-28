@@ -11,12 +11,12 @@ export const chatApi = api.injectEndpoints({
       providesTags: (result, error) =>
         !error && result?.list
           ? [
-            ...result.list.map(({ _id }: { _id: number }) => ({
-              type: 'Sessions' as const,
-              id: _id,
-            })),
-            { type: 'Sessions' as const, id: 'LIST' },
-          ]
+              ...result.list.map(({ _id }: { _id: number }) => ({
+                type: 'Sessions' as const,
+                id: _id,
+              })),
+              { type: 'Sessions' as const, id: 'LIST' },
+            ]
           : [{ type: 'Sessions' as const, id: 'LIST' }],
     }),
 
@@ -66,23 +66,22 @@ export const chatApi = api.injectEndpoints({
       // invalidatesTags: [{ type: 'Sessions', id: 'LIST' }],
     }),
 
-    updateSession: builder.mutation<void, { session_id: number | string, title: string }>({
+    updateSession: builder.mutation<void, { session_id: number | string; title: string }>({
       query: (body) => ({
         url: '/api/v1/update-session',
         method: 'PUT',
         body,
         headers: { hideSuccessToast: 'true' },
-      })
+      }),
     }),
 
-    summarizeDocument: builder.mutation<any, { sessionId: string; }>({
+    summarizeDocument: builder.mutation<any, { sessionId: string }>({
       query: ({ sessionId }) => ({
         url: `/api/v1/summarizeDocument?session_id=${sessionId}`,
         method: 'POST',
         headers: { hideSuccessToast: 'true' },
-      })
+      }),
     }),
-
   }),
 })
 

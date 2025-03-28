@@ -72,7 +72,7 @@ export default function VerifyOtpForm({ data }: VerifyOtpFormProps) {
               <Typography variant="display1" textAlign={'center'} color="primary.main">
                 Verification
               </Typography>
-              <Typography variant="body2" textAlign={'center'} px={{xs: 0, sm: 3}}>
+              <Typography variant="body2" textAlign={'center'} px={{ xs: 0, sm: 3 }}>
                 We've sent the verification OTP on your email , please enter the OTP here to create your account.
               </Typography>
             </Stack>
@@ -80,7 +80,7 @@ export default function VerifyOtpForm({ data }: VerifyOtpFormProps) {
 
           {/* OTP */}
           <Grid2 size={12} my={2}>
-              <OtpField name="otp" control={control} />
+            <OtpField name="otp" control={control} />
           </Grid2>
 
           <Grid2 size={12} mt={1}>

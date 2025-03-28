@@ -8,4 +8,4 @@ export type TMenuOption = {
 } & (
     | { link?: never, subMenu: Omit<TMenuOption, 'Icon'>[], target?: never }
     | { link?: string, subMenu?: never, target?: '_blank' | '_self' }
-  ) 
+  )

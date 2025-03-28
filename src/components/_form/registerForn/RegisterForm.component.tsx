@@ -81,27 +81,25 @@ const RegisterForm = () => {
 
             {/* Password */}
             <Grid2 size={12}>
-              
-                <Typography variant="body1">Password*</Typography>
-                <InputField
-                  name="password"
-                  placeholder="Please enter your Password"
-                  type={showPassword ? 'text' : 'password'}
-                  control={control}
-                  slotProps={{
-                    input: {
-                      endAdornment: <IconButton onClick={() => setShowPassword((prev) => !prev)}>{showPassword ? <MdVisibility /> : <MdVisibilityOff />}</IconButton>,
-                      autoComplete: 'new-password',
-                    },
-                    formHelperText: {
-                      sx: { display: errors.password?.type === 'validate' ? 'none' : undefined },
-                    },
-                  }}
-                />
-                <Typography variant="body2" color={errors.password?.type === 'validate' ? 'error.dark' : 'text.secondary'}>
-                  Password must have minimum 8 characters, with at least 1 upper case letter, 1 lower case letter, 1 numeric and 1 special character.
-                </Typography>
-              
+              <Typography variant="body1">Password*</Typography>
+              <InputField
+                name="password"
+                placeholder="Please enter your Password"
+                type={showPassword ? 'text' : 'password'}
+                control={control}
+                slotProps={{
+                  input: {
+                    endAdornment: <IconButton onClick={() => setShowPassword((prev) => !prev)}>{showPassword ? <MdVisibility /> : <MdVisibilityOff />}</IconButton>,
+                    autoComplete: 'new-password',
+                  },
+                  formHelperText: {
+                    sx: { display: errors.password?.type === 'validate' ? 'none' : undefined },
+                  },
+                }}
+              />
+              <Typography variant="body2" color={errors.password?.type === 'validate' ? 'error.dark' : 'text.secondary'}>
+                Password must have minimum 8 characters, with at least 1 upper case letter, 1 lower case letter, 1 numeric and 1 special character.
+              </Typography>
             </Grid2>
 
             {/* Confirm Password */}
@@ -160,18 +158,20 @@ const RegisterForm = () => {
 
             <Stack width={1}>
               <Typography variant="body2" textAlign={'center'} color="primary.main">
-                Already Have an Account? <Link href="/auth/login" style={{fontWeight:600}}>Login</Link>
+                Already Have an Account?{' '}
+                <Link href="/auth/login" style={{ fontWeight: 600 }}>
+                  Login
+                </Link>
               </Typography>
             </Stack>
           </Grid2>
         )}
-
       </Stack>
-        {/* Verify OTP */}
-        {showOtpForm && (<VerifyOtpForm data={getValues()} />)}
+      {/* Verify OTP */}
+      {showOtpForm && <VerifyOtpForm data={getValues()} />}
       <Footer px={0} />
     </Stack>
   )
-} 
+}
 
 export default RegisterForm

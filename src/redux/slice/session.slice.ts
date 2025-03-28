@@ -11,7 +11,7 @@ export const sessionSlice = createSlice({
       state.sessions = action.payload
     },
     updateSessionTitle: (state, action: PayloadAction<{ session_id: number | string; title: string }>) => {
-      const sessionToUpdate = state.sessions.find(session => session._id === action.payload.session_id)
+      const sessionToUpdate = state.sessions.find((session) => session._id === action.payload.session_id)
       if (sessionToUpdate) {
         sessionToUpdate.title = action.payload.title
       }

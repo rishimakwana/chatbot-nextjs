@@ -23,5 +23,5 @@ export const style: TStyle = {
     '&:hover': {
       backgroundColor: '#E2E8F0',
     },
-  }
+  },
 }

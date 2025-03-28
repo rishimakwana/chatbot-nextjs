@@ -27,7 +27,7 @@ export const extendedApi = api.injectEndpoints({
             setUser({ token, redirection: false })
             dispatch(updateUser(user))
           })
-          .catch(() => { })
+          .catch(() => {})
       },
     }),
 
@@ -66,7 +66,7 @@ export const extendedApi = api.injectEndpoints({
           .then(({ data: { user } }) => {
             dispatch(updateUser(user))
           })
-          .catch(() => { })
+          .catch(() => {})
       },
     }),
 
@@ -74,7 +74,7 @@ export const extendedApi = api.injectEndpoints({
       query: () => '/api/getProfile',
       // providesTags: ['profile'],
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-        await queryFulfilled.then(({ data }) => dispatch(updateUser(data))).catch(() => { })
+        await queryFulfilled.then(({ data }) => dispatch(updateUser(data))).catch(() => {})
       },
     }),
 
@@ -90,8 +90,8 @@ export const extendedApi = api.injectEndpoints({
         headers: { hideSuccessToast: 'true' },
       }),
     }),
-
   }),
 })
 
-export const { useLoginMutation, useRegisterMutation, useUpdateUserMutation, useLazyGetUserQuery, useForgotPasswordMutation, useResetPasswordMutation, useUpdatePasswordMutation, useResendOtpMutation, useVerifyOtpMutation } = extendedApi
+export const { useLoginMutation, useRegisterMutation, useUpdateUserMutation, useLazyGetUserQuery, useForgotPasswordMutation, useResetPasswordMutation, useUpdatePasswordMutation, useResendOtpMutation, useVerifyOtpMutation } =
+  extendedApi

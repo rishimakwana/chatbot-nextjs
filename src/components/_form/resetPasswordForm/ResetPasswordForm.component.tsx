@@ -29,7 +29,7 @@ const ResetPasswordForm = () => {
   }, [router.isReady])
 
   const onSubmit = async (formData: TSchema) => {
-    await resetPassword({ newPassword: formData.password, token:formData.token }).unwrap()
+    await resetPassword({ newPassword: formData.password, token: formData.token }).unwrap()
     router.replace('/auth/login')
   }
 

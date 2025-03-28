@@ -4,6 +4,6 @@ export const style: TStyle = {
   root: {
     p: 2,
     // height: '100vh',
-    bgcolor: 'background.paper'
+    bgcolor: 'background.paper',
   },
 }

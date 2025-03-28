@@ -73,16 +73,12 @@ export default function SidebarContent() {
   const handleClose = () => setTimeout(() => setAnchorEl(null), 200)
 
   const handleActionClick = (status: string, id: number | string) => {
-    console.log(status, id)
     if (status === 'delete') {
       setOpenDeleteConfirmation(true)
     } else if (status === 'rename') {
       // setRenamedChatId(id)
       setRenameDialogOpen(true)
-
       const chatToRename = sessions.find((chat) => chat._id == renamedChatId)
-      console.log(chatToRename, 'chatToRenamechatToRename')
-
       setNewChatTitle(chatToRename?.title || '')
     }
   }
@@ -219,7 +215,7 @@ export default function SidebarContent() {
                     <Link href={`/chat/${chat._id}`} passHref style={{ flex: 1 }}>
                       <ListItemButton sx={{ borderRadius: 1, '&:hover': { bgcolor: 'action.hover' } }}>
                         <ListItemText
-                          primary={chat?.title?.length > 20 ? chat.title.slice(0, 20) + '...' : chat.title}
+                          primary={chat?.title?.length > 20 ? chat.title.slice(0, 20) + '' : chat.title}
                           sx={{
                             '& .MuiListItemText-primary': {
                               fontSize: '0.875rem',
