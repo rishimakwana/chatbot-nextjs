@@ -1,38 +1,35 @@
 import Link from 'next/link'
-import { useEffect } from 'react'
-import { useRouter } from 'next/router'
-import { HiCheckCircle } from 'react-icons/hi2'
-import { Button, Stack, Typography } from '@mui/material'
+import { CiCircleCheck } from 'react-icons/ci'
+import { Button, Card, Stack, Typography } from '@mui/material'
 
-import { TPage } from '@/types'
+import Logo from '@/components/logo/Logo.component'
 import AuthLayout from '@/layouts/authLayout/AuthLayout.component'
+import { TPage } from '@/types'
 
 const ThankYou: TPage = () => {
-  const router = useRouter()
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      router.push('/')
-    }, 8000)
-
-    return () => clearTimeout(timer) // Cleanup in case the component unmounts
-  }, [router])
   return (
-    <Stack alignItems="center" justifyContent="center" height="calc(100vh - 50px)" textAlign="center" spacing={4}>
-      {/* Icon */}
-      <HiCheckCircle size={62} style={{ color: 'var(--mui-palette-primary-main)' }} />
-
-      {/* Header */}
-      <Stack spacing={1.5}>
-        <Typography variant="display2">Congratulations</Typography>
-        <Typography>You have successfully created your account.</Typography>
+    <>
+      <Stack alignItems={{ xs: 'center', md: 'start' }}>
+        <Logo collapsed={false} />
       </Stack>
+      <Stack alignItems="center" justifyContent="center" height="calc(100vh - 122px)" textAlign="center" spacing={4}>
+        <Stack component={Card} variant="outlined" sx={{ width: '100%', maxWidth: 400 }} alignItems="center" gap={2} p={4}>
+          {/* Icon */}
+          <Stack component={CiCircleCheck} size={62} sx={{ color: 'green' }} />
 
-      {/* Action */}
-      <Button variant="orange" href="/" size="large" component={Link} replace>
-        Continue
-      </Button>
-    </Stack>
+          {/* Header */}
+          <Stack spacing={1.5}>
+            <Typography variant="display2">Congratulations</Typography>
+            <Typography>You have successfully created your account.</Typography>
+          </Stack>
+
+          {/* Action */}
+          <Button variant="orange" href="/" size="large" component={Link} replace fullWidth>
+            Continue
+          </Button>
+        </Stack>
+      </Stack>
+    </>
   )
 }
 

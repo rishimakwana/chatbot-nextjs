@@ -58,8 +58,8 @@ export default function VerifyOtpForm({ data }: VerifyOtpFormProps) {
 
   const onSubmit = async (formData: TSchema) => {
     await verifyOtp(formData).unwrap()
-    dispatch(updateUser({ ...userData, verified: true }))
     router.replace('/auth/register/thank-you')
+    dispatch(updateUser({ ...userData, verified: true }))
   }
 
   return (

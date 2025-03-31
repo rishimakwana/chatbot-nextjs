@@ -27,13 +27,15 @@ export default function ChatContent() {
   })
 
   useEffect(() => {
-    if (!chatHistoryApiState.isSuccess || chatHistoryApiState.isFetching) return
-    const formattedMessages = chatHistoryApiState.data.flatMap((msg: any) => {
-      return [
-        { type: 'question' as 'query', content: msg.query },
-        { type: 'answer' as 'response', content: msg.response, files: msg.files_name },
-      ]
-    })
+    // if (!chatHistoryApiState.isSuccess || chatHistoryApiState.isFetching) return
+    if (!chatHistoryApiState.isSuccess || chatHistoryApiState.isFetching || !Array.isArray(chatHistoryApiState.data)) return
+
+
+    const formattedMessages = chatHistoryApiState.data.flatMap((msg: any) => [
+      { type: 'question' as const, content: msg.query },
+      { type: 'answer' as const, content: msg.response, files: msg.files_name },
+    ])
+
     dispatch(addMessage({ sessionId, messages: formattedMessages }))
   }, [chatHistoryApiState.isSuccess, chatHistoryApiState.isFetching])
 
@@ -55,7 +57,7 @@ export default function ChatContent() {
     <>
       <Header />
       <Stack bgcolor={'background.paper'} sx={{ height: 'calc(100vh - 137px)', flexGrow: 1, justifyContent: !sessionId ? 'center' : 'flex-start' }}>
-        {chatHistoryApiState.isLoading ? (
+        {chatHistoryApiState?.isLoading ? (
           <CircularProgress sx={{ display: 'block', mx: 'auto', my: 4 }} />
         ) : (
           <Stack p={4} pt={0} pb={0} gap={3} height={1}>

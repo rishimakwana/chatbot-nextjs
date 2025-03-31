@@ -5,6 +5,7 @@ export const sessionSlice = createSlice({
   name: 'session',
   initialState: {
     sessions: [] as TGetSessionListResponse[],
+    isSummarizeLoading: false,
   },
   reducers: {
     addSessions: (state, action: PayloadAction<TGetSessionListResponse[]>) => {
@@ -16,8 +17,11 @@ export const sessionSlice = createSlice({
         sessionToUpdate.title = action.payload.title
       }
     },
+    setSummarizeLoading: (state, action: PayloadAction<boolean>) => {
+      state.isSummarizeLoading = action.payload
+    },
   },
 })
 
-export const { addSessions, updateSessionTitle } = sessionSlice.actions
+export const { addSessions, updateSessionTitle, setSummarizeLoading } = sessionSlice.actions
 export default sessionSlice.reducer

@@ -42,7 +42,7 @@ export const useAuth = ({ pageType }: RootLayoutProps) => {
     ;(async () => {
       if (!token && pageType === 'protected') await router.replace(`/auth/login?returnTo=${location.pathname}${location.search}${location.hash}`)
       else if (!token) setLoading(false)
-      else if (token && pageType === 'auth' && isLoggedIn && userData && userData.verified && (await validate())) await router.replace('/')
+      else if (token && pageType === 'auth' && isLoggedIn && (await validate())) await router.replace('/')
       else if (token && pageType === 'auth' && isLoggedIn && userData && !userData.verified) {
         await router.push({
           pathname: '/auth/register',

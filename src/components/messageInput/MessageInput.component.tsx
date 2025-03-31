@@ -11,14 +11,15 @@ import { style } from './MessageInput.style'
 import { MessageInputProps } from './MessageInput.type'
 import { useUploadPdfMutation } from '@/redux/api/documents.api'
 import { MdClose } from 'react-icons/md'
+import { useReduxSelector } from '@/hooks'
 
 export default function MessageInput(props: MessageInputProps) {
   const { loading, onMessage, onSummarize } = props
   const [message, setMessage] = useState('')
   const [file, setFile] = useState<File | null>(null)
   const [showSuggestions, setShowSuggestions] = useState(false)
-
   const fileInputRef = useRef<HTMLInputElement | null>(null)
+  const { isSummarizeLoading } = useReduxSelector((state) => state.session)
 
   const [uploadPdf, { isLoading }] = useUploadPdfMutation()
   const [fileData, setFileData] = useState<{ type: string; time: number } | null>(null)
@@ -112,7 +113,7 @@ export default function MessageInput(props: MessageInputProps) {
       {isNewChat && !showSuggestions && (
         <Stack gap={1} sx={style.actionButtons}>
           {actionButtons.map(({ icon, text, onClick }, index) => (
-            <Button key={index} variant="outlined" startIcon={icon} onClick={onClick}>
+            <Button key={index} variant="outlined" startIcon={icon} onClick={onClick} loading={text === 'Summarise' && isSummarizeLoading}>
               {text}
             </Button>
           ))}
