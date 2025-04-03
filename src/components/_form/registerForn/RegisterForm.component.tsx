@@ -66,7 +66,7 @@ const RegisterForm = () => {
               <Grid2 size={{ xs: 12, sm: 6 }}>
                 {/* <Stack spacing={1}> */}
                 <Typography variant="body1">Full Name*</Typography>
-                <InputField name="fullName" type="text" placeholder="Please enter your Full Name." control={control} />
+                <InputField name="fullName" type="text" placeholder="Full Name*" control={control} />
                 {/* </Stack> */}
               </Grid2>
 
@@ -74,7 +74,7 @@ const RegisterForm = () => {
               <Grid2 size={{ xs: 12, sm: 6 }}>
                 {/* <Stack spacing={1}> */}
                 <Typography variant="body1">Email*</Typography>
-                <InputField name="email" type="email" placeholder="Please enter an Email Id." control={control} />
+                <InputField name="email" type="email" placeholder="Email*" control={control} />
                 {/* </Stack> */}
               </Grid2>
             </Grid2>
@@ -84,7 +84,7 @@ const RegisterForm = () => {
               <Typography variant="body1">Password*</Typography>
               <InputField
                 name="password"
-                placeholder="Please enter your Password"
+                placeholder="Password*"
                 type={showPassword ? 'text' : 'password'}
                 control={control}
                 slotProps={{
@@ -107,7 +107,7 @@ const RegisterForm = () => {
               <Typography variant="body1">Confirm Password*</Typography>
               <InputField
                 name="confirmPassword"
-                placeholder="Please confirm your Password."
+                placeholder="Confirm Password*"
                 type={showConfirmPassword ? 'text' : 'password'}
                 control={control}
                 slotProps={{

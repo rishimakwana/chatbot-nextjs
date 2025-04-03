@@ -30,7 +30,6 @@ export default function ChatContent() {
     // if (!chatHistoryApiState.isSuccess || chatHistoryApiState.isFetching) return
     if (!chatHistoryApiState.isSuccess || chatHistoryApiState.isFetching || !Array.isArray(chatHistoryApiState.data)) return
 
-
     const formattedMessages = chatHistoryApiState.data.flatMap((msg: any) => [
       { type: 'question' as const, content: msg.query },
       { type: 'answer' as const, content: msg.response, files: msg.files_name },
@@ -76,14 +75,11 @@ export default function ChatContent() {
                         {message.content}
                       </Typography>
                     </Box>
-                    {message.type !== 'question' && (
+                    {message?.type !== 'question' && message?.content && (
                       <Stack direction={'row'} gap={1}>
                         <IconButton onClick={() => handleCopy(message.content)}>
                           <FiCopy fontSize="small" />
                         </IconButton>
-                        {/* <IconButton onClick={() => handleCopy(message.content)}>
-                              <FiRefreshCcw fontSize="small" />
-                            </IconButton> */}
                       </Stack>
                     )}
                   </Stack>

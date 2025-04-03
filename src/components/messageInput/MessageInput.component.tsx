@@ -6,7 +6,7 @@ import { BsFiletypeXlsx } from 'react-icons/bs'
 import { PiChartLineThin } from 'react-icons/pi'
 import { FaCircleArrowUp } from 'react-icons/fa6'
 import { useEffect, useRef, useState } from 'react'
-import { Button, IconButton, Stack, TextField, Typography } from '@mui/material'
+import { Button, IconButton, Menu, MenuItem, Popover, Stack, TextField, Typography } from '@mui/material'
 import { style } from './MessageInput.style'
 import { MessageInputProps } from './MessageInput.type'
 import { useUploadPdfMutation } from '@/redux/api/documents.api'
@@ -18,7 +18,9 @@ export default function MessageInput(props: MessageInputProps) {
   const [message, setMessage] = useState('')
   const [file, setFile] = useState<File | null>(null)
   const [showSuggestions, setShowSuggestions] = useState(false)
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const fileInputRef = useRef<HTMLInputElement | null>(null)
+
   const { isSummarizeLoading } = useReduxSelector((state) => state.session)
 
   const [uploadPdf, { isLoading }] = useUploadPdfMutation()
@@ -30,7 +32,7 @@ export default function MessageInput(props: MessageInputProps) {
     { icon: <PiChartLineThin size={18} />, text: 'Summarise', onClick: () => onSummarize && onSummarize() },
     { icon: <LuFileScan size={18} />, text: 'Upload Doc', onClick: () => handleFileUpload('doc') },
     { icon: <BsFiletypeXlsx size={18} />, text: 'Upload XLSX', onClick: () => handleFileUpload('xlsx') },
-    { icon: <GoPencil size={18} />, text: 'Help me write', onClick: () => setShowSuggestions(!showSuggestions) },
+    { icon: <GoPencil size={18} />, text: 'Help me write', onClick: () => handleHelpMeWrite() },
   ]
 
   const router = useRouter()
@@ -55,6 +57,11 @@ export default function MessageInput(props: MessageInputProps) {
 
   const triggerFileInput = () => {
     fileInputRef.current?.click()
+  }
+
+  const handleHelpMeWrite = () => {
+    // setAnchorEl(event.currentTarget)
+    setShowSuggestions(!showSuggestions)
   }
 
   const handleFileChangeAndSubmit = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -107,6 +114,22 @@ export default function MessageInput(props: MessageInputProps) {
             },
           }}
         />
+        {/* <Popover open={showSuggestions} anchorEl={anchorEl}>
+          <Stack sx={style.suggestionStack} p={2}>
+            {suggestions.map((suggestion, index) => (
+              <Typography
+                key={index}
+                onClick={() => {
+                  setMessage(suggestion)
+                  setShowSuggestions(false)
+                }}
+                sx={style.suggestion}
+              >
+                {suggestion}
+              </Typography>
+            ))}
+          </Stack>
+        </Popover> */}
       </Stack>
 
       {/* Action Buttons */}

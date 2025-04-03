@@ -46,14 +46,14 @@ const LoginForm = () => {
               <Typography mb={1} variant="body1">
                 Email ID
               </Typography>
-              <InputField name="email" type="email" placeholder="abc@example.com" control={control} />
+              <InputField name="email" type="email" placeholder="Email *" control={control} />
             </Grid2>
 
             {/* Password */}
             <Grid2 size={12}>
               <Stack justifyContent={'space-between'} direction={'row'}>
                 <Typography mb={1} variant="body1">
-                  Passwrod
+                  Password
                 </Typography>
                 {/* Forgot Password */}
                 <MuiLink href="/auth/forgot-password" sx={{ textDecoration: 'none' }}>
@@ -64,7 +64,7 @@ const LoginForm = () => {
                 name="password"
                 type={showPassword ? 'text' : 'password'}
                 control={control}
-                placeholder="Please enter your Password"
+                placeholder="Password *"
                 slotProps={{
                   input: {
                     endAdornment: <IconButton onClick={() => setShowPassword((prev) => !prev)}>{showPassword ? <MdVisibility /> : <MdVisibilityOff />}</IconButton>,
@@ -84,7 +84,7 @@ const LoginForm = () => {
                 Login
               </Button>
               <Typography variant="body2" color="primary.main" mt={2} textAlign={'center'}>
-                Are You a New User?{' '}
+                Are you a new user?{' '}
                 <Link href="/auth/register" style={{ fontWeight: 600 }}>
                   Register
                 </Link>

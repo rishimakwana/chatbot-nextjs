@@ -11,6 +11,8 @@ import { Box, debounce, Grid2, IconButton, Pagination, Paper, Stack, TextField, 
 import { usePagination, useUrlParams } from '@/hooks'
 import { useDeleteDocumentMutation, useGetAllDocumentsQuery } from '@/redux/api/documents.api'
 import pdfImage from '@/../public/images/pages/pdf.png'
+import docImage from '@/../public/images/pages/doc.png'
+import xlsxImage from '@/../public/images/pages/xlsx.png'
 import RenderContent from '../renderContent/RenderContent.component'
 import { TFilter } from '@/layouts/rootLayout/components/sidebar/components/sidebarContent/SidebarContent.type'
 import ConfirmationPopup from '../confirmationPopup/ConfirmationPopup.component'
@@ -87,7 +89,8 @@ export default function Documents() {
                           gap: 1,
                         }}
                       >
-                        <Image src={pdfImage} alt="pdf" width={40} height={40} />
+                        <Image src={doc.document_type.type === 'xlsx' ? xlsxImage : doc.document_type.type === 'doc' ? docImage : pdfImage} alt={doc.document_type.type} width={40} height={40} />
+                        {/* <Image src={pdfImage} alt="pdf" width={40} height={40} /> */}
                         <Box sx={{ flexGrow: 1, minWidth: 0 }}>
                           <Typography variant="body1">{doc.file_name}</Typography>
                           <Typography variant="body1">{moment(doc.created_at).format()}</Typography>

@@ -7,6 +7,8 @@ import { GoSidebarCollapse, GoUpload } from 'react-icons/go'
 import { Box, Button, CircularProgress, IconButton, Skeleton, Stack, Typography, useMediaQuery } from '@mui/material'
 import Image from 'next/image'
 import pdfImage from '@/../public/images/pages/pdf.png'
+import docImage from '@/../public/images/pages/doc.png'
+import xlsxImage from '@/../public/images/pages/xlsx.png'
 import seeAllDoc from '@/../public/images/pages/seealldocs.svg'
 import VisuallyHiddenInput from '../hiddenInput/HiddenInput.component'
 import { useRef, useState } from 'react'
@@ -83,7 +85,9 @@ export default function Header() {
             <>
               {data.list.map((file: any, index: number) => (
                 <Stack key={index} sx={style.docCard}>
-                  <Image src={pdfImage} alt="pdf" width={18} height={20} />
+                  <Image src={file.document_type.type === 'xlsx' ? xlsxImage : file.document_type.type === 'doc' ? docImage : pdfImage} alt={file.document_type.type} width={18} height={20} />
+                  {/* <Image src={pdfImage} alt="pdf" width={18} height={20} /> */}
+
                   <Typography variant="body2" color="primary.main" sx={style.docCardText}>
                     {file.file_name}
                   </Typography>
@@ -94,10 +98,6 @@ export default function Header() {
               {isLoading ? (
                 <CircularProgress size={24} />
               ) : (
-                // <Button component="label" variant="outlined" disabled={isLoading} startIcon={<CiCirclePlus size={28} />}>
-                //   Upload files
-                //   <input type="file" accept=".pdf,.doc,.docx,.xlsx" onChange={handleFileChangeAndSubmit} hidden ref={inputRef} />
-                // </Button>
                 <Stack sx={{ ...style.docCard, cursor: 'pointer' }}>
                   <CiCirclePlus size={28} />
                   <VisuallyHiddenInput onChange={handleFileChangeAndSubmit} />
